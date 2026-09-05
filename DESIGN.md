@@ -45,37 +45,11 @@ This document defines the strict visual language, design tokens, typography, com
 
 ---
 
-## 4. Simplified Component Architecture
+## 4. Direct Contact Channels
 
-### A. Navigation (`components/Navbar.tsx`)
-- Links: **Home** (`#home`), **Services** (`#services`), **Contact** (`#contact`).
-- Phone badge: `+977 9818587406` with active `tel:+9779818587406` link.
-- Mobile drawer with responsive hamburger menu.
-
-### B. Hero (`components/Hero.tsx`)
-- Headline: Three bold lines with gold underlines on `BRANDS`, `IMPACT`, `GROWTH`.
-- Pre-headline: `BUILD · INNOVATE · ELEVATE`.
-- Single punchy supporting sentence.
-- Single Solid Gold CTA button: `Let's Connect` linking to `#contact`.
-
-### C. Services (`components/Services.tsx`)
-- Header: `Digital Solutions` (with `Solutions` in Gold).
-- 3 Core Cards in a clean row (stacked on mobile):
-  1. **Social Media Management:** *"Strategy, content & growth for your brand."*
-  2. **Graphic Design & Branding:** *"Eye-catching designs that communicate your brand."*
-  3. **Website & Digital Marketing:** *"Modern websites & campaigns that drive results."*
-
-### D. Platforms (`components/Platforms.tsx`)
-- Clean static cards linking to official channels: **Instagram**, **Facebook**, **TikTok**.
-
-### E. Contact (`components/Contact.tsx`)
-- Direct outreach cards for **WhatsApp** (`+977 9818587406`) and **Email** (`lucianofficial636@gmail.com`).
-
-### F. Footer (`components/Footer.tsx`)
-- Tagline: `ONE BRAND. ENDLESS POSSIBILITIES.` (`ENDLESS` in gold).
-- Social links:
-  - Instagram: `https://www.instagram.com/_lucianofficial/`
-  - Facebook: `https://www.facebook.com/profile.php?id=61593873428903`
-  - TikTok: `https://www.tiktok.com/@.lucianofficial`
-  - Threads: `https://www.threads.com/@_lucianofficial`
-- Copyright: `© 2026 LUCIAN. All rights reserved.`
+- **Official Email:** `lucianofficial07052026@gmail.com`
+- **WhatsApp:** `https://wa.me/9779818587406` (`977 9818587406`)
+- **Instagram:** `https://www.instagram.com/_lucianofficial/`
+- **Facebook:** `https://www.facebook.com/profile.php?id=61593873428903`
+- **TikTok:** `https://www.tiktok.com/@.lucianofficial`
+- **Threads:** `https://www.threads.com/@_lucianofficial`

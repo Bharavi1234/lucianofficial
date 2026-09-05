@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Phone, Menu, X } from "lucide-react";
+import { MessageCircle, Menu, X, Mail, Instagram, Facebook } from "lucide-react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -39,7 +39,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Right side: Navigation links */}
+        {/* Navigation links */}
         <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
           <Link
             href="/#services"
@@ -55,15 +55,17 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* Far right: Phone icon with "977 9818587406" in gold + Mobile toggle */}
+        {/* Far right: Direct WhatsApp Contact Button + Mobile toggle */}
         <div className="flex items-center gap-4">
           <a
-            href="tel:+9779818587406"
+            href="https://wa.me/9779818587406"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
-            aria-label="Call 977 9818587406"
+            aria-label="WhatsApp LUCIAN"
           >
-            <Phone className="w-3.5 h-3.5" />
-            <span>977 9818587406</span>
+            <MessageCircle className="w-4 h-4" />
+            <span>WhatsApp Us</span>
           </a>
 
           {/* Mobile Menu Button */}
@@ -98,19 +100,41 @@ export function Navbar() {
             </Link>
             <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
               <a
-                href="tel:+9779818587406"
+                href="https://wa.me/9779818587406"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-mono font-semibold"
               >
-                <Phone className="w-4 h-4" />
-                <span>977 9818587406</span>
+                <MessageCircle className="w-4 h-4" />
+                <span>WhatsApp: 977 9818587406</span>
               </a>
-              <Link
-                href="/#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="inline-flex items-center justify-center px-4 py-3 rounded-lg bg-gold text-background font-semibold text-sm hover:bg-[#FFBE53]"
+              <a
+                href="mailto:lucianofficial07052026@gmail.com"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-surface border border-white/10 text-primaryText text-sm font-mono"
               >
-                Let&apos;s Connect
-              </Link>
+                <Mail className="w-4 h-4 text-gold" />
+                <span>Email Us</span>
+              </a>
+              <div className="flex items-center justify-center gap-4 pt-2">
+                <a
+                  href="https://www.instagram.com/_lucianofficial/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-lg bg-surface border border-white/10 text-mutedText hover:text-gold"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://www.facebook.com/profile.php?id=61593873428903"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2.5 rounded-lg bg-surface border border-white/10 text-mutedText hover:text-gold"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-5 h-5" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
