@@ -10,9 +10,7 @@ import {
   Mail,
   Bot,
   User,
-  ArrowRight,
-  CheckCircle2,
-  Minimize2,
+  Minus,
 } from "lucide-react";
 
 interface Message {
@@ -20,46 +18,133 @@ interface Message {
   sender: "bot" | "user";
   text: string;
   timestamp: string;
-  isLeadForm?: boolean;
 }
 
-const QUICK_REPLIES = [
+interface QAEntry {
+  keywords: string[];
+  answer: string;
+}
+
+// 12 Rule-Based Q&A entries
+const QA_DATABASE: QAEntry[] = [
+  {
+    keywords: ["service", "offer", "do you do", "what do you provide", "what services", "solutions"],
+    answer: `LUCIAN offers 5 core digital solutions:
+1. Social Media Management – Strategy, content, scheduling & growth
+2. Graphic Design & Poster Making – Eye-catching brand designs
+3. Website Design & Development – Modern, responsive websites
+4. Digital Marketing & Advertising – Campaigns that maximize ROI
+5. Other Digital Solutions – SEO, branding, video editing & automation
+
+Which service are you most interested in?`,
+  },
+  {
+    keywords: ["price", "cost", "charge", "how much", "quote", "pricing", "budget", "expensive", "affordable", "rate", "fee"],
+    answer: `Great question! Our pricing varies based on your specific needs – project scope, timeline, and requirements all factor in. The best way to get an accurate quote is to start an inquiry! Click 'Get Started' on any service card, fill out the brief details, and we'll get back to you with a custom quote within 24 hours.`,
+  },
+  {
+    keywords: ["start", "get started", "how to begin", "process", "steps", "begin", "where to start", "onboard"],
+    answer: `Getting started with LUCIAN is easy!
+1. Browse our services and pick the one you need
+2. Click 'Get Started' on that service card
+3. Fill out our quick 3-step inquiry form
+4. We'll review and get back to you within 24 hours
+
+Or if you prefer, you can WhatsApp us directly at 977 9818587406!`,
+  },
+  {
+    keywords: ["social media", "instagram", "facebook", "tiktok", "youtube", "linkedin", "smm", "social", "post", "reel"],
+    answer: `Yes! Social Media Management is one of our core services. We handle:
+• Content strategy & planning
+• Post creation & scheduling
+• Audience engagement
+• Growth analytics
+
+We help brands build a strong online presence across Instagram, Facebook, TikTok, YouTube, and LinkedIn. Ready to grow your social presence? Click 'Get Started' on the Social Media Management card!`,
+  },
+  {
+    keywords: ["website", "web", "build website", "web development", "design website", "site", "landing page", "frontend", "coder"],
+    answer: `Absolutely! Our Website Design & Development service creates:
+• Modern, responsive websites
+• User-friendly interfaces
+• SEO-optimized sites
+• High conversion rates
+
+We build websites that look great and drive results. Want to see what we can do for you? Start an inquiry and tell us about your project!`,
+  },
+  {
+    keywords: ["graphic", "design", "poster", "branding", "logo", "visual", "creative", "art", "illustration", "banner", "flyer"],
+    answer: `Yes! Our Graphic Design & Poster Making service delivers:
+• Eye-catching designs that communicate your brand
+• Logos, social media graphics, marketing materials
+• Brand guidelines and visual identity
+
+We make sure your brand leaves a lasting impact. Click 'Get Started' on the Graphic Design & Poster Making card!`,
+  },
+  {
+    keywords: ["digital marketing", "ads", "advertising", "campaign", "marketing", "roi", "conversion", "ad", "meta ads", "google ads"],
+    answer: `Our Digital Marketing & Advertising service includes:
+• Targeted ad campaigns (social media, search, display)
+• Data-driven strategies
+• ROI optimization
+• Performance tracking and reporting
+
+We create campaigns that convert and maximize your return on investment!`,
+  },
+  {
+    keywords: ["other", "seo", "automation", "video", "editing", "branding", "more", "additional", "custom"],
+    answer: `Our Other Digital Solutions cover everything else you might need:
+• SEO (Search Engine Optimization)
+• Branding and identity
+• Video editing and production
+• Marketing automation
+
+We do it all for your growth. Tell us what you need and we'll build a custom solution!`,
+  },
+  {
+    keywords: ["person", "human", "real", "talk", "call", "connect", "speak", "agent", "live", "representative", "founder"],
+    answer: `Of course! You can reach a real human at LUCIAN through:
+Email: lucianofficial636@gmail.com
+WhatsApp: 977 9818587406
+
+Or click 'Get Started' on any service card to submit an inquiry.
+A real team member will get back to you within 24 hours!`,
+  },
+  {
+    keywords: ["thanks", "thank you", "awesome", "great", "cool", "ok", "okay", "nice", "perfect", "good", "appreciate"],
+    answer: `You're very welcome! If you have any more questions, I'm always here to help. Ready to start your journey with LUCIAN? Just click 'Get Started' on any service card, or reach out directly via email (lucianofficial636@gmail.com) or WhatsApp (977 9818587406). We can't wait to work with you!`,
+  },
+  {
+    keywords: ["hello", "hi", "hey", "hola", "yo", "good morning", "good afternoon", "good evening", "hey there", "namaste"],
+    answer: `Hello! Welcome to LUCIAN – your 360° digital solutions agency. I'm here to help you learn about our services, pricing, and how we can grow your brand. What can I help you with today?`,
+  },
+  {
+    keywords: ["inquiry", "inquiry form", "submit", "form", "application", "quote form"],
+    answer: `You can start an inquiry by clicking 'Get Started' on any service card. This will take you through our quick 3-step process:
+1. Confirm your selected service
+2. Tell us about you and your project
+3. Review and submit
+
+We'll get back to you within 24 hours via email or WhatsApp!`,
+  },
+];
+
+const FALLBACK_ANSWER = `That's a great question! Let me point you to the best way to get answers. You can:
+• Browse our services above and click 'Get Started' for details
+• Visit our About page to learn more about us
+• Contact us directly via email (lucianofficial636@gmail.com) or WhatsApp (977 9818587406)
+
+Is there a specific service you're interested in?`;
+
+const QUICK_REPLY_BUTTONS = [
   "What services do you offer?",
   "How much do you charge?",
   "How do I get started?",
   "Do you do social media?",
   "Can you build a website?",
+  "What about graphic design?",
   "Connect me with a real person",
 ];
-
-const PRESET_RESPONSES: Record<string, string> = {
-  "what services do you offer?": `LUCIAN offers 5 core digital solutions:
-1. Social Media Management – Strategy, content, scheduling & growth
-2. Graphic Design & Poster Making – Eye-catching brand designs
-3. Website Design & Development – Modern, responsive websites
-4. Digital Marketing & Advertising – Campaigns that maximize ROI
-5. Other Digital Solutions – SEO, branding, video editing & automation`,
-
-  "how much do you charge?": `Great question! Our pricing varies based on your specific needs. The best way to get an accurate quote is to start an inquiry! Click "Get Started" on any service card, fill out the brief details, and we'll get back to you with a custom quote within 24 hours.`,
-
-  "how do i get started?": `Getting started with LUCIAN is easy!
-1. Browse our services
-2. Click "Get Started" on the service you want
-3. Fill out our quick 3-step form
-4. We'll get back to you within 24 hours.
-Or WhatsApp us directly at 977 9818587406!`,
-
-  "do you do social media?": `Yes! Social Media Management is one of our core services. We handle content strategy, post creation & scheduling, audience engagement, and growth analytics across Instagram, Facebook, TikTok, YouTube, and LinkedIn.`,
-
-  "can you build a website?": `Absolutely! Our Website Design & Development service creates modern, responsive, SEO-optimized sites that drive conversions.`,
-
-  "connect me with a real person": `Of course!
-• Email: lucianofficial636@gmail.com
-• WhatsApp: 977 9818587406 (wa.me/9779818587406)
-• Instagram: @_lucianofficial
-
-Or click "Get Started" on any service card. A real team member will get back to you within 24 hours!`,
-};
 
 export function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -67,58 +152,52 @@ export function Chatbot() {
     {
       id: "welcome",
       sender: "bot",
-      text: "Hello! I'm LUCIAN Bot. How can I help elevate your brand today?",
+      text: "Hello! Welcome to LUCIAN. I'm here to help you explore our 360° digital solutions. What can I help you with today?",
       timestamp: "Just now",
     },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
-
-  // Lead capture state
-  const [leadName, setLeadName] = useState("");
-  const [leadContact, setLeadContact] = useState("");
-  const [leadSubmitted, setLeadSubmitted] = useState(false);
-  const [leadSubmitting, setLeadSubmitting] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Load Puter.js in background
-  useEffect(() => {
-    if (typeof window !== "undefined" && !(window as unknown as { puter?: unknown }).puter) {
-      const script = document.createElement("script");
-      script.src = "https://js.puter.com/v2/";
-      script.async = true;
-      document.body.appendChild(script);
-    }
-  }, []);
-
-  // Scroll to bottom when messages update
   useEffect(() => {
     if (isOpen) {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isTyping, isOpen]);
 
-  // Focus input on open
   useEffect(() => {
     if (isOpen) {
-      setUnreadCount(0);
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 200);
+      }, 150);
     }
   }, [isOpen]);
 
-  const handleSendMessage = async (textToSend?: string) => {
-    const queryText = (textToSend || input).trim();
-    if (!queryText || isTyping) return;
+  // Pure rule-based keyword matching logic
+  const findAnswer = (query: string): string => {
+    const q = query.toLowerCase().trim();
+
+    for (const entry of QA_DATABASE) {
+      const isMatch = entry.keywords.some((kw) => q.includes(kw));
+      if (isMatch) {
+        return entry.answer;
+      }
+    }
+
+    return FALLBACK_ANSWER;
+  };
+
+  const handleSendMessage = (textToSend?: string) => {
+    const userText = (textToSend || input).trim();
+    if (!userText || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       sender: "user",
-      text: queryText,
+      text: userText,
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
@@ -126,174 +205,51 @@ export function Chatbot() {
     if (!textToSend) setInput("");
     setIsTyping(true);
 
-    // Check instant local preset responses first
-    const lower = queryText.toLowerCase().trim();
-    if (PRESET_RESPONSES[lower]) {
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            sender: "bot",
-            text: PRESET_RESPONSES[lower],
-            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-          },
-        ]);
-        setIsTyping(false);
-      }, 400);
-      return;
-    }
+    // 500ms simulated typing delay
+    setTimeout(() => {
+      const botAnswer = findAnswer(userText);
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        sender: "bot",
+        text: botAnswer,
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      };
 
-    try {
-      // 1. Try Puter.js directly in browser if available
-      const puterObj = (window as unknown as { puter?: { ai?: { chat?: (prompt: string, opts?: { model?: string }) => Promise<unknown> } } })?.puter;
-      if (puterObj?.ai?.chat) {
-        try {
-          const puterResponse = await puterObj.ai.chat(
-            `You are LUCIAN Bot, the friendly AI assistant for LUCIAN – a 360° digital solutions agency (Social Media Management, Graphic Design, Web Development, Digital Marketing, SEO & Branding). Contact: lucianofficial636@gmail.com, WhatsApp: 977 9818587406. Answer concisely and enthusiastically: ${queryText}`,
-            { model: "gemini-2.5-flash" }
-          );
-
-          const replyText =
-            typeof puterResponse === "string"
-              ? puterResponse
-              : (puterResponse as { message?: { content?: string } })?.message?.content ||
-                (puterResponse as { text?: string })?.text;
-
-          if (replyText) {
-            setMessages((prev) => [
-              ...prev,
-              {
-                id: (Date.now() + 1).toString(),
-                sender: "bot",
-                text: replyText,
-                timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-              },
-            ]);
-            setIsTyping(false);
-            return;
-          }
-        } catch {
-          // fallback to API route
-        }
-      }
-
-      // 2. Call internal /api/chat route
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: queryText,
-          history: messages.slice(-4).map((m) => ({
-            role: m.sender === "bot" ? "assistant" : "user",
-            content: m.text,
-          })),
-        }),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: (Date.now() + 1).toString(),
-            sender: "bot",
-            text: data.reply || "I'm here to help! Feel free to WhatsApp us at 977 9818587406.",
-            timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-          },
-        ]);
-      } else {
-        throw new Error("Chat response not ok");
-      }
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          sender: "bot",
-          text: `I'd love to help with that! You can reach our team directly at lucianofficial636@gmail.com or on WhatsApp at 977 9818587406.`,
-          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        },
-      ]);
-    } finally {
+      setMessages((prev) => [...prev, botMessage]);
       setIsTyping(false);
-    }
-  };
-
-  const handleLeadSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!leadName.trim() || !leadContact.trim()) return;
-
-    setLeadSubmitting(true);
-    try {
-      await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          serviceName: "Chatbot Lead Capture",
-          fullName: leadName,
-          email: leadContact.includes("@") ? leadContact : "Chatbot Lead",
-          phone: leadContact,
-          projectBrief: "User requested callback via LUCIAN AI Chatbot.",
-          budgetRange: "Not specified",
-          howFound: "AI Chatbot",
-        }),
-      }).catch(() => {});
-
-      setLeadSubmitted(true);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 2).toString(),
-          sender: "bot",
-          text: `Thank you, ${leadName}! Our team has received your details and will contact you via ${leadContact} within 24 hours.`,
-          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        },
-      ]);
-    } catch {
-      setLeadSubmitted(true);
-    } finally {
-      setLeadSubmitting(false);
-    }
+    }, 500);
   };
 
   return (
     <>
-      {/* Floating Gold Chat Toggle Button */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+      {/* Floating Gold Toggle Button */}
+      <div className="fixed bottom-6 right-6 z-[9999]">
         {!isOpen && (
           <button
             onClick={() => setIsOpen(true)}
-            className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gold text-background shadow-[0_0_25px_rgba(245,176,65,0.45)] hover:bg-[#FFBE53] hover:scale-110 active:scale-95 transition-all duration-200"
-            aria-label="Open LUCIAN AI Chatbot"
+            className="w-14 h-14 rounded-full bg-gold text-background flex items-center justify-center shadow-[0_0_25px_rgba(245,176,65,0.45)] hover:bg-[#FFBE53] hover:scale-105 active:scale-95 transition-all duration-200 animate-bounce"
+            aria-label="Open LUCIAN Chatbot"
           >
-            <MessageSquare className="w-6 h-6 text-background transition-transform group-hover:rotate-12" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 border-2 border-background animate-pulse" />
+            <MessageSquare className="w-6 h-6 text-background" />
           </button>
         )}
       </div>
 
-      {/* Chat Window Popup */}
+      {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-[400px] h-[580px] max-h-[85vh] rounded-3xl bg-[#121212] border border-gold/30 shadow-[0_20px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-6 duration-300">
+        <div className="fixed bottom-6 right-4 sm:right-6 z-[9999] w-[calc(100vw-2rem)] sm:w-[380px] h-[520px] max-h-[85vh] rounded-2xl bg-[#151515] border-2 border-gold shadow-[0_25px_60px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
           {/* Header */}
-          <div className="p-4 bg-surface border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gold/15 border border-gold/40 flex items-center justify-center text-gold shadow-[0_0_15px_rgba(245,176,65,0.2)]">
-                <Bot className="w-5 h-5" />
+          <div className="p-4 bg-[#0A0A0A] border-b border-gold flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-gold/15 border border-gold/40 flex items-center justify-center text-gold">
+                <Bot className="w-4 h-4" />
               </div>
               <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-black tracking-wide text-primaryText uppercase">
-                    LUCIAN <span className="text-gold">Bot</span>
-                  </h3>
-                  <span className="inline-flex items-center gap-1 text-[10px] font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/40 px-1.5 py-0.5 rounded-full">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    Online
-                  </span>
-                </div>
+                <h3 className="text-sm font-black tracking-wide text-gold uppercase">
+                  LUCIAN Bot
+                </h3>
                 <p className="text-[11px] text-mutedText font-mono">
-                  360° Digital Agency AI Assistant
+                  360° Digital Solutions Assistant
                 </p>
               </div>
             </div>
@@ -301,15 +257,15 @@ export function Chatbot() {
             <div className="flex items-center gap-1">
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg text-mutedText hover:text-primaryText hover:bg-white/5 transition-colors"
-                aria-label="Minimize Chatbot"
+                className="p-1.5 rounded text-mutedText hover:text-primaryText transition-colors"
+                aria-label="Minimize"
               >
-                <Minimize2 className="w-4 h-4" />
+                <Minus className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1.5 rounded-lg text-mutedText hover:text-gold hover:bg-white/5 transition-colors"
-                aria-label="Close Chatbot"
+                className="p-1.5 rounded text-mutedText hover:text-gold transition-colors"
+                aria-label="Close"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -317,35 +273,35 @@ export function Chatbot() {
           </div>
 
           {/* Messages Feed */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 text-sm">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 max-h-[320px] scrollbar-thin scrollbar-thumb-white/10">
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex items-start gap-2.5 ${
+                className={`flex items-start gap-2 ${
                   msg.sender === "user" ? "flex-row-reverse" : "flex-row"
                 }`}
               >
                 <div
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-xs ${
+                  className={`w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0 text-[11px] ${
                     msg.sender === "user"
-                      ? "bg-gold text-background font-bold"
-                      : "bg-surface border border-gold/30 text-gold"
+                      ? "bg-white text-black font-bold"
+                      : "bg-[#0A0A0A] border border-gold/30 text-gold"
                   }`}
                 >
-                  {msg.sender === "user" ? <User className="w-3.5 h-3.5" /> : <Sparkles className="w-3.5 h-3.5" />}
+                  {msg.sender === "user" ? <User className="w-3 h-3" /> : <Sparkles className="w-3 h-3" />}
                 </div>
 
                 <div
-                  className={`max-w-[80%] rounded-2xl p-3.5 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap ${
+                  className={`max-w-[82%] rounded-xl p-3 text-xs sm:text-[13px] leading-relaxed whitespace-pre-wrap ${
                     msg.sender === "user"
-                      ? "bg-gold text-background font-medium rounded-tr-none shadow-[0_2px_15px_rgba(245,176,65,0.25)]"
-                      : "bg-surface border border-white/10 text-primaryText rounded-tl-none"
+                      ? "bg-white text-black font-medium rounded-tr-none"
+                      : "bg-[#0A0A0A] border border-white/10 text-primaryText rounded-tl-none"
                   }`}
                 >
                   {msg.text}
                   <div
-                    className={`text-[10px] mt-1.5 font-mono ${
-                      msg.sender === "user" ? "text-background/70 text-right" : "text-mutedText"
+                    className={`text-[9px] mt-1 font-mono ${
+                      msg.sender === "user" ? "text-black/60 text-right" : "text-[#666]"
                     }`}
                   >
                     {msg.timestamp}
@@ -356,11 +312,11 @@ export function Chatbot() {
 
             {/* Typing Indicator */}
             {isTyping && (
-              <div className="flex items-center gap-2 text-xs text-mutedText font-mono">
-                <div className="w-7 h-7 rounded-lg bg-surface border border-gold/30 flex items-center justify-center text-gold">
-                  <Bot className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-2 text-xs text-mutedText">
+                <div className="w-6 h-6 rounded-md bg-[#0A0A0A] border border-gold/30 flex items-center justify-center text-gold">
+                  <Bot className="w-3 h-3" />
                 </div>
-                <div className="p-3 rounded-2xl bg-surface border border-white/10 rounded-tl-none flex items-center gap-1.5">
+                <div className="p-2.5 rounded-xl bg-[#0A0A0A] border border-white/10 rounded-tl-none flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce" style={{ animationDelay: "0ms" }} />
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce" style={{ animationDelay: "150ms" }} />
                   <span className="w-1.5 h-1.5 rounded-full bg-gold animate-bounce" style={{ animationDelay: "300ms" }} />
@@ -368,60 +324,24 @@ export function Chatbot() {
               </div>
             )}
 
-            {/* Lead Capture Widget (Optionally displayed) */}
-            {!leadSubmitted && messages.length >= 3 && (
-              <div className="p-3.5 rounded-xl bg-gold/5 border border-gold/30 space-y-2.5">
-                <div className="flex items-center gap-2 text-xs font-mono text-gold font-semibold">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  <span>Want a quick callback or custom quote?</span>
-                </div>
-                <form onSubmit={handleLeadSubmit} className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={leadName}
-                    onChange={(e) => setLeadName(e.target.value)}
-                    required
-                    className="w-full h-8 px-2.5 text-xs rounded-md bg-[#0A0A0A] border border-white/10 text-primaryText focus:border-gold outline-none"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Email or WhatsApp"
-                    value={leadContact}
-                    onChange={(e) => setLeadContact(e.target.value)}
-                    required
-                    className="w-full h-8 px-2.5 text-xs rounded-md bg-[#0A0A0A] border border-white/10 text-primaryText focus:border-gold outline-none"
-                  />
-                  <button
-                    type="submit"
-                    disabled={leadSubmitting}
-                    className="w-full h-8 rounded-md bg-gold text-background text-xs font-bold hover:bg-[#FFBE53] transition-colors flex items-center justify-center gap-1.5"
-                  >
-                    {leadSubmitting ? <span>Sending...</span> : <span>Request Quick Callback</span>}
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                </form>
-              </div>
-            )}
-
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Reply Pills */}
-          <div className="p-2 border-t border-white/5 bg-background/50 overflow-x-auto scrollbar-none flex items-center gap-1.5 flex-nowrap">
-            {QUICK_REPLIES.map((reply) => (
+          {/* Quick Reply Chips */}
+          <div className="p-2 border-t border-white/10 bg-[#0A0A0A] overflow-x-auto scrollbar-none flex items-center gap-1.5 flex-nowrap">
+            {QUICK_REPLY_BUTTONS.map((chip) => (
               <button
-                key={reply}
-                onClick={() => handleSendMessage(reply)}
-                className="flex-shrink-0 px-2.5 py-1 rounded-full bg-surface border border-white/10 hover:border-gold/50 hover:bg-gold/10 hover:text-gold text-[11px] font-mono text-mutedText transition-all"
+                key={chip}
+                onClick={() => handleSendMessage(chip)}
+                className="flex-shrink-0 px-2.5 py-1 rounded-full border border-gold/60 text-gold hover:bg-gold hover:text-black text-[11px] font-mono transition-colors"
               >
-                {reply}
+                {chip}
               </button>
             ))}
           </div>
 
-          {/* Chat Input Bar */}
-          <div className="p-3 bg-surface border-t border-white/10">
+          {/* Input Area */}
+          <div className="p-3 bg-[#151515] border-t border-white/10">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -434,35 +354,35 @@ export function Chatbot() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask LUCIAN Bot anything..."
-                className="flex-1 h-10 px-3.5 text-xs rounded-xl bg-[#0A0A0A] border border-white/10 text-primaryText placeholder:text-mutedText/60 focus:border-gold focus:ring-1 focus:ring-gold outline-none transition-colors"
+                placeholder="Ask a question..."
+                className="flex-1 h-9 px-3 text-xs rounded-lg bg-[#0A0A0A] border border-gold text-white placeholder:text-mutedText/50 focus:outline-none focus:ring-1 focus:ring-gold transition-colors"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isTyping}
-                className="w-10 h-10 rounded-xl bg-gold text-background flex items-center justify-center hover:bg-[#FFBE53] disabled:opacity-40 transition-all flex-shrink-0 shadow-[0_0_10px_rgba(245,176,65,0.3)]"
-                aria-label="Send message"
+                className="w-9 h-9 rounded-lg bg-gold text-white flex items-center justify-center hover:bg-[#FFBE53] disabled:opacity-40 transition-colors flex-shrink-0"
+                aria-label="Send"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 text-black" />
               </button>
             </form>
 
-            {/* Quick Contact Links */}
-            <div className="flex items-center justify-between pt-2 px-1 text-[10px] font-mono text-mutedText/70">
+            {/* Quick Links */}
+            <div className="flex items-center justify-between pt-2 text-[10px] font-mono text-mutedText">
               <a
                 href="https://wa.me/9779818587406"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-gold flex items-center gap-1 transition-colors"
               >
-                <Phone className="w-2.5 h-2.5" />
-                <span>WhatsApp: 977 9818587406</span>
+                <Phone className="w-2.5 h-2.5 text-gold" />
+                <span>977 9818587406</span>
               </a>
               <a
                 href="mailto:lucianofficial636@gmail.com"
                 className="hover:text-gold flex items-center gap-1 transition-colors"
               >
-                <Mail className="w-2.5 h-2.5" />
+                <Mail className="w-2.5 h-2.5 text-gold" />
                 <span>lucianofficial636@gmail.com</span>
               </a>
             </div>
