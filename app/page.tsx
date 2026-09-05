@@ -3,7 +3,6 @@ import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { Platforms } from "@/components/Platforms";
-import { Work } from "@/components/Work";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
 
@@ -13,25 +12,22 @@ export default function Home() {
       {/* Background Ambient Grid Canvas */}
       <div className="ambient-grid" aria-hidden="true" />
 
-      {/* 1. Navigation */}
+      {/* 1. Simplified Navigation */}
       <Navbar />
 
-      {/* 2. Hero Section */}
+      {/* 2. Simplified Hero Section */}
       <Hero />
 
-      {/* 3. Services Grid */}
+      {/* 3. Simplified 3-Card Services Grid */}
       <Services />
 
-      {/* 4. Platforms Marquee */}
+      {/* 4. Connect / Platforms */}
       <Platforms />
 
-      {/* 5. Work Showcase */}
-      <Work />
-
-      {/* 6. Contact Section */}
+      {/* 5. Simplified Direct Contact */}
       <Contact />
 
-      {/* 7. Footer */}
+      {/* 6. Simplified Footer */}
       <Footer />
     </main>
   );

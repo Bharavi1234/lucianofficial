@@ -1,95 +1,80 @@
 import React from "react";
 import Link from "next/link";
-import { Instagram, Facebook, Youtube, Linkedin } from "lucide-react";
+import { Instagram, Facebook, Video, AtSign } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-[#070707] border-t border-white/10 pt-24 pb-12 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+    <footer className="bg-[#070707] border-t border-white/10 py-16 text-center relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center">
         {/* Main Big Statement */}
-        <div className="mb-16">
-          <h2 className="text-3xl sm:text-5xl md:text-7xl font-black text-primaryText tracking-tight uppercase leading-[1.1]">
-            ONE BRAND. <span className="text-gold">ENDLESS</span> POSSIBILITIES.
-          </h2>
-        </div>
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-primaryText tracking-tight uppercase leading-tight mb-8">
+          ONE BRAND. <span className="text-gold">ENDLESS</span> POSSIBILITIES.
+        </h2>
 
-        {/* Brand Details & Navigation Links */}
-        <div className="flex flex-col items-center justify-center space-y-8 mb-16">
-          {/* Logo */}
-          <Link
-            href="#home"
-            className="flex items-center gap-3 text-2xl font-black tracking-widest text-primaryText"
-            aria-label="LUCIAN"
+        {/* Brand Logo */}
+        <Link
+          href="#home"
+          className="inline-flex items-center gap-2 text-xl font-black tracking-widest text-primaryText mb-8 hover:opacity-90 transition-opacity"
+          aria-label="LUCIAN"
+        >
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded bg-surface border border-gold/40 text-gold font-bold text-sm">
+            L
+          </span>
+          <span className="font-extrabold tracking-[0.16em]">
+            LUCI<span className="text-gold">A</span>N
+          </span>
+        </Link>
+
+        {/* Social Media Icons (Instagram, Facebook, TikTok, Threads) */}
+        <div className="flex items-center justify-center gap-4 mb-8">
+          {/* Instagram */}
+          <a
+            href="https://www.instagram.com/_lucianofficial/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
+            aria-label="Instagram"
           >
-            <span className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-surface border border-gold/40 text-gold font-bold text-lg">
-              L
-            </span>
-            <span className="font-extrabold tracking-[0.18em]">
-              LUCI<span className="text-gold">A</span>N
-            </span>
-          </Link>
+            <Instagram className="w-5 h-5" />
+          </a>
 
-          {/* Quick Nav Links */}
-          <div className="flex flex-wrap justify-center gap-8 text-sm text-mutedText">
-            <Link href="#home" className="hover:text-gold transition-colors">
-              Home
-            </Link>
-            <Link href="#services" className="hover:text-gold transition-colors">
-              Services
-            </Link>
-            <Link href="#work" className="hover:text-gold transition-colors">
-              Work
-            </Link>
-            <Link href="#contact" className="hover:text-gold transition-colors">
-              Contact
-            </Link>
-          </div>
+          {/* Facebook */}
+          <a
+            href="https://www.facebook.com/profile.php?id=61593873428903"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
+            aria-label="Facebook"
+          >
+            <Facebook className="w-5 h-5" />
+          </a>
 
-          {/* Social Icons (Instagram, Facebook, YouTube, LinkedIn) */}
-          <div className="flex items-center justify-center gap-4">
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5" />
-            </a>
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
-              aria-label="Facebook"
-            >
-              <Facebook className="w-5 h-5" />
-            </a>
-            <a
-              href="https://youtube.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
-              aria-label="YouTube"
-            >
-              <Youtube className="w-5 h-5" />
-            </a>
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-5 h-5" />
-            </a>
-          </div>
+          {/* TikTok */}
+          <a
+            href="https://www.tiktok.com/@.lucianofficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
+            aria-label="TikTok"
+          >
+            <Video className="w-5 h-5" />
+          </a>
+
+          {/* Threads */}
+          <a
+            href="https://www.threads.com/@_lucianofficial"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-11 h-11 rounded-xl bg-surface border border-white/10 flex items-center justify-center text-mutedText hover:text-gold hover:border-gold/50 hover:bg-surface-hover hover:scale-105 transition-all duration-200"
+            aria-label="Threads"
+          >
+            <AtSign className="w-5 h-5" />
+          </a>
         </div>
 
-        {/* Bottom Bar: Copyright */}
-        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-dimText">
-          <div>&copy; 2026 LUCIAN. All rights reserved.</div>
-          <div className="text-gold/80">BUILD &middot; INNOVATE &middot; ELEVATE</div>
+        {/* Copyright */}
+        <div className="pt-6 border-t border-white/5 w-full max-w-xs text-xs font-mono text-mutedText">
+          &copy; 2026 LUCIAN. All rights reserved.
         </div>
       </div>
     </footer>

@@ -25,10 +25,10 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        {/* Left: Brand Logo (A in Gold) */}
+        {/* Brand Logo (A in Gold) */}
         <Link
           href="#home"
-          className="group flex items-center gap-3 text-2xl font-black tracking-widest text-primaryText transition-opacity hover:opacity-95"
+          className="flex items-center gap-3 text-2xl font-black tracking-widest text-primaryText transition-opacity hover:opacity-95"
           aria-label="LUCIAN Homepage"
         >
           <span className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-surface border border-gold/40 text-gold font-bold text-lg shadow-[0_0_15px_rgba(245,176,65,0.2)]">
@@ -39,19 +39,19 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Navigation Links */}
+        {/* Desktop Navigation Links (Simplified to 3 essentials) */}
         <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
+          <Link
+            href="#home"
+            className="text-sm font-medium text-mutedText hover:text-gold transition-colors duration-200"
+          >
+            Home
+          </Link>
           <Link
             href="#services"
             className="text-sm font-medium text-mutedText hover:text-gold transition-colors duration-200"
           >
             Services
-          </Link>
-          <Link
-            href="#work"
-            className="text-sm font-medium text-mutedText hover:text-gold transition-colors duration-200"
-          >
-            Work
           </Link>
           <Link
             href="#contact"
@@ -64,12 +64,12 @@ export function Navbar() {
         {/* Far Right: Phone + CTA & Mobile Toggle */}
         <div className="flex items-center gap-4">
           <a
-            href="tel:+919818587406"
+            href="tel:+9779818587406"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
-            aria-label="Call +91 9818587406"
+            aria-label="Call +977 9818587406"
           >
             <Phone className="w-3.5 h-3.5" />
-            <span>+91 9818587406</span>
+            <span>+977 9818587406</span>
           </a>
 
           {/* Mobile Menu Button */}
@@ -89,18 +89,18 @@ export function Navbar() {
         <div className="md:hidden bg-background/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 transition-all">
           <div className="flex flex-col gap-4">
             <Link
+              href="#home"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-lg font-medium text-primaryText hover:text-gold py-1"
+            >
+              Home
+            </Link>
+            <Link
               href="#services"
               onClick={() => setMobileMenuOpen(false)}
               className="text-lg font-medium text-primaryText hover:text-gold py-1"
             >
               Services
-            </Link>
-            <Link
-              href="#work"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-lg font-medium text-primaryText hover:text-gold py-1"
-            >
-              Work
             </Link>
             <Link
               href="#contact"
@@ -111,11 +111,11 @@ export function Navbar() {
             </Link>
             <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
               <a
-                href="tel:+919818587406"
+                href="tel:+9779818587406"
                 className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-mono font-semibold"
               >
                 <Phone className="w-4 h-4" />
-                <span>+91 9818587406</span>
+                <span>+977 9818587406</span>
               </a>
               <a
                 href="#contact"
