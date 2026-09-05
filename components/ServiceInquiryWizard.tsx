@@ -30,11 +30,10 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
   // Form inputs state (auto-preserved across steps)
-  const [countryCode, setCountryCode] = useState("+977");
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
-    phoneNumber: "",
+    phone: "",
     projectBrief: "",
     budgetRange: "$1k–2.5k",
     howFound: "Instagram",
@@ -43,7 +42,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const [touched, setTouched] = useState({
     fullName: false,
     email: false,
-    phoneNumber: false,
+    phone: false,
     projectBrief: false,
   });
 
@@ -55,13 +54,11 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const isEmailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
     formData.email.trim()
   );
-  const cleanPhoneDigits = formData.phoneNumber.replace(/[^0-9]/g, "");
-  const isPhoneValid = cleanPhoneDigits.length >= 6 && cleanPhoneDigits.length <= 15;
+  const cleanPhoneDigits = formData.phone.replace(/[^0-9]/g, "");
+  const isPhoneValid = cleanPhoneDigits.length >= 7 && cleanPhoneDigits.length <= 16;
   const isBriefValid = formData.projectBrief.trim().length >= 10;
 
   const isStep2Valid = isNameValid && isEmailValid && isPhoneValid && isBriefValid;
-
-  const fullPhone = `${countryCode} ${formData.phoneNumber.trim()}`;
 
   // Pre-filled WhatsApp message for direct instant chat
   const whatsappPreFilledUrl = `https://wa.me/9779818587406?text=${encodeURIComponent(
@@ -70,7 +67,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
       `*Service:* ${service.title}\n` +
       `*Name:* ${formData.fullName || "Prospective Client"}\n` +
       `*Email:* ${formData.email || "Not specified"}\n` +
-      `*Phone:* ${fullPhone || "Not specified"}\n` +
+      `*Phone:* ${formData.phone.trim() || "Not specified"}\n` +
       `*Budget:* ${formData.budgetRange}\n` +
       `*Brief:* ${formData.projectBrief || "Interested in learning more about this service."}\n` +
       `----------------------------\n` +
@@ -92,7 +89,6 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         body: JSON.stringify({
           serviceName: service.title,
           ...formData,
-          phone: fullPhone,
         }),
       }).catch((err) => console.log("API notice:", err));
 
@@ -107,7 +103,6 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         body: JSON.stringify({
           serviceName: service.title,
           ...formData,
-          phone: fullPhone,
         }),
       }).catch((err) => console.log("Formspree notice:", err));
 
@@ -118,7 +113,6 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           JSON.stringify({
             serviceName: service.title,
             ...formData,
-            phone: fullPhone,
             submittedAt: new Date().toLocaleTimeString(),
           })
         );
@@ -144,7 +138,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
     setTouched({
       fullName: true,
       email: true,
-      phoneNumber: true,
+      phone: true,
       projectBrief: true,
     });
     if (isStep2Valid) {
@@ -326,51 +320,24 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {/* Phone with Country Code Selector */}
+              {/* Phone / WhatsApp direct input */}
               <div className="space-y-2">
                 <label htmlFor="phone" className="text-xs font-semibold uppercase tracking-wider text-primaryText flex items-center justify-between">
-                  <span>Phone / WhatsApp <span className="text-gold">*</span></span>
-                  {touched.phoneNumber && !isPhoneValid && (
-                    <span className="text-[11px] text-red-400 normal-case font-normal">Valid phone number required</span>
+                  <span>Phone / WhatsApp Number <span className="text-gold">*</span></span>
+                  {touched.phone && !isPhoneValid && (
+                    <span className="text-[11px] text-red-400 normal-case font-normal">Please enter a valid phone number</span>
                   )}
                 </label>
-                <div className="flex gap-2">
-                  <select
-                    id="countryCode"
-                    value={countryCode}
-                    onChange={(e) => setCountryCode(e.target.value)}
-                    className="flex h-12 w-[130px] flex-shrink-0 rounded-md border border-white/10 bg-[#0A0A0A] px-2.5 py-2 text-xs font-mono text-gold focus-visible:outline-none focus-visible:border-gold focus-visible:ring-1 focus-visible:ring-gold transition-colors"
-                  >
-                    <option value="+977">🇳🇵 +977 (Nepal)</option>
-                    <option value="+91">🇮🇳 +91 (India)</option>
-                    <option value="+1">🇺🇸 +1 (US / CA)</option>
-                    <option value="+44">🇬🇧 +44 (UK)</option>
-                    <option value="+61">🇦🇺 +61 (Australia)</option>
-                    <option value="+971">🇦🇪 +971 (UAE)</option>
-                    <option value="+49">🇩🇪 +49 (Germany)</option>
-                    <option value="+65">🇸🇬 +65 (Singapore)</option>
-                    <option value="+880">🇧🇩 +880 (Bangladesh)</option>
-                    <option value="+92">🇵🇰 +92 (Pakistan)</option>
-                    <option value="+966">🇸🇦 +966 (Saudi Arabia)</option>
-                    <option value="+974">🇶🇦 +974 (Qatar)</option>
-                    <option value="+965">🇰🇼 +965 (Kuwait)</option>
-                    <option value="+60">🇲🇾 +60 (Malaysia)</option>
-                    <option value="+81">🇯🇵 +81 (Japan)</option>
-                    <option value="+">🌐 Other (+)</option>
-                  </select>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="98XXXXXXXX"
-                    value={formData.phoneNumber}
-                    onBlur={() => setTouched({ ...touched, phoneNumber: true })}
-                    onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                    className={`flex-1 ${
-                      touched.phoneNumber && !isPhoneValid ? "border-red-500 focus-visible:ring-red-500" : ""
-                    }`}
-                    required
-                  />
-                </div>
+                <Input
+                  id="phone"
+                  type="tel"
+                  placeholder="e.g. +977 9818587406 or 9818587406"
+                  value={formData.phone}
+                  onBlur={() => setTouched({ ...touched, phone: true })}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className={touched.phone && !isPhoneValid ? "border-red-500 focus-visible:ring-red-500" : ""}
+                  required
+                />
               </div>
 
               {/* Budget Range */}
@@ -493,7 +460,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
               <div>
                 <div className="text-xs font-mono text-mutedText uppercase mb-1">Contact Details</div>
                 <div className="text-sm text-primaryText font-medium">{formData.fullName}</div>
-                <div className="text-xs text-mutedText">{formData.email} &middot; {fullPhone}</div>
+                <div className="text-xs text-mutedText">{formData.email} &middot; {formData.phone}</div>
               </div>
               <button
                 type="button"
