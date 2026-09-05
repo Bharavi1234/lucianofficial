@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { servicesList, getServiceIcon } from "@/lib/services-data";
-import { Button } from "@/components/ui/button";
 
 export function Services() {
   const topServices = servicesList.slice(0, 3);
@@ -54,7 +53,9 @@ export function Services() {
                     </div>
 
                     <h3 className="text-xl sm:text-2xl font-bold text-primaryText mb-3">
-                      {service.title}
+                      <Link href={`/services/${service.slug}`} className="hover:text-gold transition-colors">
+                        {service.title}
+                      </Link>
                     </h3>
 
                     <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-8">
@@ -62,17 +63,15 @@ export function Services() {
                     </p>
                   </div>
 
-                  {/* Get Started Button linking to inquiry flow */}
+                  {/* Whole Golden Button as Full-Area Direct Clickable Link */}
                   <div className="pt-4 border-t border-white/5">
-                    <Button
-                      asChild
-                      className="w-full font-bold bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_18px_rgba(245,176,65,0.25)] group-hover:shadow-[0_0_25px_rgba(245,176,65,0.45)]"
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="w-full flex items-center justify-between px-6 py-3.5 rounded-lg font-bold text-sm bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_18px_rgba(245,176,65,0.25)] group-hover:shadow-[0_0_25px_rgba(245,176,65,0.45)] transition-all active:scale-[0.99] cursor-pointer"
                     >
-                      <Link href={`/services/${service.slug}`} className="justify-between">
-                        <span>Get Started</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
+                      <span>Get Started</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                    </Link>
                   </div>
                 </div>
               );
@@ -99,7 +98,9 @@ export function Services() {
                     </div>
 
                     <h3 className="text-xl sm:text-2xl font-bold text-primaryText mb-3">
-                      {service.title}
+                      <Link href={`/services/${service.slug}`} className="hover:text-gold transition-colors">
+                        {service.title}
+                      </Link>
                     </h3>
 
                     <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-8">
@@ -107,17 +108,15 @@ export function Services() {
                     </p>
                   </div>
 
-                  {/* Get Started Button linking to inquiry flow */}
+                  {/* Whole Golden Button as Full-Area Direct Clickable Link */}
                   <div className="pt-4 border-t border-white/5">
-                    <Button
-                      asChild
-                      className="w-full font-bold bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_18px_rgba(245,176,65,0.25)] group-hover:shadow-[0_0_25px_rgba(245,176,65,0.45)]"
+                    <Link
+                      href={`/services/${service.slug}`}
+                      className="w-full flex items-center justify-between px-6 py-3.5 rounded-lg font-bold text-sm bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_18px_rgba(245,176,65,0.25)] group-hover:shadow-[0_0_25px_rgba(245,176,65,0.45)] transition-all active:scale-[0.99] cursor-pointer"
                     >
-                      <Link href={`/services/${service.slug}`} className="justify-between">
-                        <span>Get Started</span>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
-                    </Button>
+                      <span>Get Started</span>
+                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1.5 transition-transform" />
+                    </Link>
                   </div>
                 </div>
               );

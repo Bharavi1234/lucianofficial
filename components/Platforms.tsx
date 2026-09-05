@@ -7,20 +7,46 @@ import {
   Linkedin,
   Globe2,
   Sparkles,
+  ExternalLink,
 } from "lucide-react";
 
 interface Platform {
   name: string;
   icon: React.ComponentType<{ className?: string }>;
+  url: string;
 }
 
 const platforms: Platform[] = [
-  { name: "Instagram", icon: Instagram },
-  { name: "Facebook", icon: Facebook },
-  { name: "TikTok", icon: Video },
-  { name: "Youtube", icon: Youtube },
-  { name: "LinkedIn", icon: Linkedin },
-  { name: "& More", icon: Globe2 },
+  {
+    name: "Instagram",
+    icon: Instagram,
+    url: "https://www.instagram.com/_lucianofficial/",
+  },
+  {
+    name: "Facebook",
+    icon: Facebook,
+    url: "https://www.facebook.com/profile.php?id=61593873428903",
+  },
+  {
+    name: "TikTok",
+    icon: Video,
+    url: "https://www.tiktok.com/@.lucianofficial",
+  },
+  {
+    name: "Youtube",
+    icon: Youtube,
+    url: "https://www.youtube.com",
+  },
+  {
+    name: "LinkedIn",
+    icon: Linkedin,
+    url: "https://www.linkedin.com",
+  },
+  {
+    name: "& More",
+    icon: Globe2,
+    url: "/#contact",
+  },
 ];
 
 export function Platforms() {
@@ -41,36 +67,48 @@ export function Platforms() {
           {/* First loop */}
           {platforms.map((platform, idx) => {
             const Icon = platform.icon;
+            const isExternal = platform.url.startsWith("http");
             return (
-              <div
+              <a
                 key={`p1-${idx}`}
-                className="flex items-center gap-4 px-8 py-4 rounded-full bg-surface border border-white/10 hover:border-gold/50 transition-all duration-200 group whitespace-nowrap shadow-sm hover:shadow-[0_0_20px_rgba(245,176,65,0.2)]"
+                href={platform.url}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-4 px-8 py-4 rounded-full bg-surface border border-white/10 hover:border-gold/60 hover:bg-surface-hover transition-all duration-200 group whitespace-nowrap shadow-sm hover:shadow-[0_0_20px_rgba(245,176,65,0.25)] hover:-translate-y-0.5 cursor-pointer"
+                title={`Visit ${platform.name}`}
               >
                 <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold group-hover:text-background transition-colors">
                   <Icon className="w-5 h-5" />
                 </div>
-                <div className="text-base font-bold text-primaryText group-hover:text-gold transition-colors">
-                  {platform.name}
+                <div className="text-base font-bold text-primaryText group-hover:text-gold transition-colors flex items-center gap-1.5">
+                  <span>{platform.name}</span>
+                  {isExternal && <ExternalLink className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 transition-opacity" />}
                 </div>
-              </div>
+              </a>
             );
           })}
 
           {/* Second duplicate loop for continuous scrolling */}
           {platforms.map((platform, idx) => {
             const Icon = platform.icon;
+            const isExternal = platform.url.startsWith("http");
             return (
-              <div
+              <a
                 key={`p2-${idx}`}
-                className="flex items-center gap-4 px-8 py-4 rounded-full bg-surface border border-white/10 hover:border-gold/50 transition-all duration-200 group whitespace-nowrap shadow-sm hover:shadow-[0_0_20px_rgba(245,176,65,0.2)]"
+                href={platform.url}
+                target={isExternal ? "_blank" : undefined}
+                rel={isExternal ? "noopener noreferrer" : undefined}
+                className="flex items-center gap-4 px-8 py-4 rounded-full bg-surface border border-white/10 hover:border-gold/60 hover:bg-surface-hover transition-all duration-200 group whitespace-nowrap shadow-sm hover:shadow-[0_0_20px_rgba(245,176,65,0.25)] hover:-translate-y-0.5 cursor-pointer"
+                title={`Visit ${platform.name}`}
               >
                 <div className="p-2 rounded-full bg-gold/10 text-gold group-hover:bg-gold group-hover:text-background transition-colors">
                   <Icon className="w-5 h-5" />
                 </div>
-                <div className="text-base font-bold text-primaryText group-hover:text-gold transition-colors">
-                  {platform.name}
+                <div className="text-base font-bold text-primaryText group-hover:text-gold transition-colors flex items-center gap-1.5">
+                  <span>{platform.name}</span>
+                  {isExternal && <ExternalLink className="w-3.5 h-3.5 opacity-40 group-hover:opacity-100 transition-opacity" />}
                 </div>
-              </div>
+              </a>
             );
           })}
         </div>
