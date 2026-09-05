@@ -48,6 +48,12 @@ export function Navbar() {
             Services
           </Link>
           <Link
+            href="/about"
+            className="text-sm font-medium text-mutedText hover:text-gold transition-colors duration-200"
+          >
+            About
+          </Link>
+          <Link
             href="/#contact"
             className="text-sm font-medium text-mutedText hover:text-gold transition-colors duration-200"
           >
@@ -55,17 +61,15 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* Far right: Direct WhatsApp Contact Button + Mobile toggle */}
+        {/* Far right: Direct Phone / WhatsApp Contact Button + Mobile toggle */}
         <div className="flex items-center gap-4">
           <a
-            href="https://wa.me/9779818587406"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="tel:+9779818587406"
             className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
-            aria-label="WhatsApp LUCIAN"
+            aria-label="Call LUCIAN: 977 9818587406"
           >
             <MessageCircle className="w-4 h-4" />
-            <span>WhatsApp Us</span>
+            <span>977 9818587406</span>
           </a>
 
           {/* Mobile Menu Button */}
@@ -92,6 +96,13 @@ export function Navbar() {
               Services
             </Link>
             <Link
+              href="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-lg font-medium text-primaryText hover:text-gold py-1"
+            >
+              About
+            </Link>
+            <Link
               href="/#contact"
               onClick={() => setMobileMenuOpen(false)}
               className="text-lg font-medium text-primaryText hover:text-gold py-1"
@@ -100,16 +111,23 @@ export function Navbar() {
             </Link>
             <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
               <a
+                href="tel:+9779818587406"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-mono font-semibold"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Call: 977 9818587406</span>
+              </a>
+              <a
                 href="https://wa.me/9779818587406"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-mono font-semibold"
+                className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-surface border border-gold/30 text-gold text-sm font-mono font-semibold"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>WhatsApp: 977 9818587406</span>
               </a>
               <a
-                href="mailto:lucianofficial07052026@gmail.com"
+                href="mailto:lucianofficial636@gmail.com"
                 className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-surface border border-white/10 text-primaryText text-sm font-mono"
               >
                 <Mail className="w-4 h-4 text-gold" />

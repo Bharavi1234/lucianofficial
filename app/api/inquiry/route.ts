@@ -51,7 +51,7 @@ export async function POST(request: Request) {
           access_key: web3Key,
           subject: `New LUCIAN Inquiry: ${serviceName} from ${fullName}`,
           from_name: "LUCIAN Website",
-          to_email: "lucianofficial07052026@gmail.com",
+          to_email: "lucianofficial636@gmail.com",
           service: serviceName,
           name: fullName,
           email: email,

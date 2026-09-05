@@ -15,6 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://lucianofficial.vercel.app"),
   title: "LUCIAN — 360° Digital Solutions Agency | BUILD · INNOVATE · ELEVATE",
   description:
     "LUCIAN is a premier 360° digital solutions agency for business owners, founders, and entrepreneurs. We build brands, create impact, and elevate growth.",
@@ -26,15 +27,21 @@ export const metadata: Metadata = {
     "Website Development",
     "Digital Marketing",
     "360 Digital Solutions",
+    "Brand Growth",
   ],
   authors: [{ name: "LUCIAN" }],
   openGraph: {
     title: "LUCIAN — 360° Digital Solutions Agency",
     description: "WE BUILD BRANDS. WE CREATE IMPACT. WE ELEVATE GROWTH.",
-    url: "https://lucian.agency",
+    url: "https://lucianofficial.vercel.app",
     siteName: "LUCIAN",
     locale: "en_US",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "LUCIAN — 360° Digital Solutions Agency",
+    description: "WE BUILD BRANDS. WE CREATE IMPACT. WE ELEVATE GROWTH.",
   },
   robots: {
     index: true,
@@ -48,6 +55,23 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "LUCIAN",
+  description:
+    "360° digital solutions agency offering social media management, graphic design, web development, and digital marketing.",
+  url: "https://lucianofficial.vercel.app",
+  email: "lucianofficial636@gmail.com",
+  telephone: "+9779818587406",
+  sameAs: [
+    "https://www.instagram.com/_lucianofficial/",
+    "https://www.facebook.com/profile.php?id=61593873428903",
+    "https://www.tiktok.com/@.lucianofficial",
+    "https://www.threads.com/@_lucianofficial",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -55,6 +79,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} dark scroll-smooth`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+      </head>
       <body className="bg-background text-primaryText font-sans antialiased selection:bg-gold selection:text-black">
         {children}
       </body>

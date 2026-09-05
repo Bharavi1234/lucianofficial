@@ -72,6 +72,37 @@ export function Footer() {
           </a>
         </div>
 
+        {/* Internal Navigation Links: About & Privacy Policy */}
+        <div className="flex items-center justify-center gap-6 mb-8 text-sm font-mono text-mutedText">
+          <Link
+            href="/about"
+            className="hover:text-gold transition-colors"
+          >
+            About
+          </Link>
+          <span className="text-white/20">&middot;</span>
+          <Link
+            href="/#services"
+            className="hover:text-gold transition-colors"
+          >
+            Services
+          </Link>
+          <span className="text-white/20">&middot;</span>
+          <Link
+            href="/#contact"
+            className="hover:text-gold transition-colors"
+          >
+            Contact
+          </Link>
+          <span className="text-white/20">&middot;</span>
+          <Link
+            href="/privacy"
+            className="hover:text-gold transition-colors"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+
         {/* Copyright */}
         <div className="pt-6 border-t border-white/5 w-full max-w-xs text-xs font-mono text-mutedText">
           &copy; 2026 LUCIAN. All rights reserved.
