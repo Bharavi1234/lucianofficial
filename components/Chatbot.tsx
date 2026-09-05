@@ -11,6 +11,9 @@ import {
   Bot,
   User,
   Minus,
+  Copy,
+  Check,
+  ExternalLink,
 } from "lucide-react";
 
 interface Message {
@@ -158,9 +161,18 @@ export function Chatbot() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleCopyEmail = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText("lucianofficial636@gmail.com");
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2500);
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -368,23 +380,45 @@ export function Chatbot() {
             </form>
 
             {/* Quick Links */}
-            <div className="flex items-center justify-between pt-2 text-[10px] font-mono text-mutedText">
+            <div className="flex items-center justify-between pt-2.5 border-t border-white/5 text-[10px] font-mono text-mutedText">
               <a
                 href="https://wa.me/9779818587406"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-gold flex items-center gap-1 transition-colors"
               >
-                <Phone className="w-2.5 h-2.5 text-gold" />
+                <Phone className="w-3 h-3 text-gold" />
                 <span>977 9818587406</span>
               </a>
-              <a
-                href="mailto:lucianofficial636@gmail.com"
-                className="hover:text-gold flex items-center gap-1 transition-colors"
-              >
-                <Mail className="w-2.5 h-2.5 text-gold" />
-                <span>lucianofficial636@gmail.com</span>
-              </a>
+
+              <div className="flex items-center gap-1.5">
+                <a
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial636@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-gold flex items-center gap-1 transition-colors text-primaryText"
+                  title="Open in Gmail"
+                >
+                  <Mail className="w-3 h-3 text-gold" />
+                  <span>lucianofficial636@gmail.com</span>
+                  <ExternalLink className="w-2.5 h-2.5 text-mutedText" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 text-mutedText hover:text-gold transition-colors flex items-center gap-0.5"
+                  title="Copy email to clipboard"
+                >
+                  {copiedEmail ? (
+                    <span className="text-gold flex items-center gap-0.5">
+                      <Check className="w-2.5 h-2.5" /> Copied!
+                    </span>
+                  ) : (
+                    <Copy className="w-2.5 h-2.5" />
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
