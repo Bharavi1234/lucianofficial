@@ -6,14 +6,14 @@ export function Footer() {
   return (
     <footer className="bg-[#070707] border-t border-white/10 py-16 text-center relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center">
-        {/* Main Big Statement */}
+        {/* Large Main Statement */}
         <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-primaryText tracking-tight uppercase leading-tight mb-8">
           ONE BRAND. <span className="text-gold">ENDLESS</span> POSSIBILITIES.
         </h2>
 
         {/* Brand Logo */}
         <Link
-          href="#home"
+          href="/#home"
           className="inline-flex items-center gap-2 text-xl font-black tracking-widest text-primaryText mb-8 hover:opacity-90 transition-opacity"
           aria-label="LUCIAN"
         >

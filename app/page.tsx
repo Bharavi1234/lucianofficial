@@ -12,22 +12,22 @@ export default function Home() {
       {/* Background Ambient Grid Canvas */}
       <div className="ambient-grid" aria-hidden="true" />
 
-      {/* 1. Simplified Navigation */}
+      {/* 1. Navigation Bar */}
       <Navbar />
 
-      {/* 2. Simplified Hero Section */}
+      {/* 2. Hero Section */}
       <Hero />
 
-      {/* 3. Simplified 3-Card Services Grid */}
+      {/* 3. Services Section (ALL-IN-ONE DIGITAL SOLUTIONS - 5 Cards) */}
       <Services />
 
-      {/* 4. Connect / Platforms */}
+      {/* 4. Platforms Section (WE WORK ACROSS ALL PLATFORMS) */}
       <Platforms />
 
-      {/* 5. Simplified Direct Contact */}
+      {/* 5. Contact Section (LET'S CONNECT) */}
       <Contact />
 
-      {/* 6. Simplified Footer */}
+      {/* 6. Footer (ONE BRAND. ENDLESS POSSIBILITIES.) */}
       <Footer />
     </main>
   );
