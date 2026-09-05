@@ -12,9 +12,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. If Formspree ID is configured in environment variables, forward to Formspree
-    const formspreeId = process.env.FORMSPREE_ID || process.env.NEXT_PUBLIC_FORMSPREE_ID;
-    if (formspreeId && formspreeId !== "YOUR_FORM_ID") {
+    // 1. Forward directly to Formspree endpoint (mqpklvrn)
+    const formspreeId = process.env.FORMSPREE_ID || process.env.NEXT_PUBLIC_FORMSPREE_ID || "mqpklvrn";
+    if (formspreeId) {
       const response = await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: "POST",
         headers: {

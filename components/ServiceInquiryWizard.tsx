@@ -80,21 +80,19 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         }),
       }).catch((err) => console.log("API notice:", err));
 
-      // 2. Also forward directly to Formspree if user configured Formspree ID
-      const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID;
-      if (formspreeId && formspreeId !== "YOUR_FORM_ID") {
-        await fetch(`https://formspree.io/f/${formspreeId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            serviceName: service.title,
-            ...formData,
-          }),
-        }).catch((err) => console.log("Formspree fallback notice:", err));
-      }
+      // 2. Submit directly to Formspree endpoint (mqpklvrn)
+      const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || "mqpklvrn";
+      await fetch(`https://formspree.io/f/${formspreeId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          serviceName: service.title,
+          ...formData,
+        }),
+      }).catch((err) => console.log("Formspree notice:", err));
 
       // Save inquiry in session storage for the confirmation page
       if (typeof window !== "undefined") {
