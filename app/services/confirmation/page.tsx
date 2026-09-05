@@ -1,16 +1,68 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, ArrowRight, Phone, Clock, FileCheck, PhoneCall, Rocket } from "lucide-react";
+import {
+  CheckCircle2,
+  ArrowRight,
+  Phone,
+  Clock,
+  FileCheck,
+  PhoneCall,
+  Rocket,
+  Mail,
+} from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
+interface InquiryData {
+  serviceName?: string;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  projectBrief?: string;
+  budgetRange?: string;
+  howFound?: string;
+  submittedAt?: string;
+}
+
 function ConfirmationContent() {
   const searchParams = useSearchParams();
-  const serviceName = searchParams.get("service") || "Digital Solutions";
+  const urlService = searchParams.get("service") || "Digital Solutions";
+  const urlName = searchParams.get("name") || "";
+
+  const [inquiry, setInquiry] = useState<InquiryData | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const stored = sessionStorage.getItem("lucian_last_inquiry");
+        if (stored) {
+          setInquiry(JSON.parse(stored));
+        }
+      } catch (e) {
+        console.error("Could not parse saved inquiry:", e);
+      }
+    }
+  }, []);
+
+  const serviceName = inquiry?.serviceName || urlService;
+  const clientName = inquiry?.fullName || urlName || "Valued Client";
+
+  const whatsappMessage = `*CONFIRMED PROJECT INQUIRY FOR LUCIAN*\n` +
+    `----------------------------\n` +
+    `*Service:* ${serviceName}\n` +
+    `*Client:* ${clientName}\n` +
+    (inquiry?.email ? `*Email:* ${inquiry.email}\n` : "") +
+    (inquiry?.phone ? `*Phone:* ${inquiry.phone}\n` : "") +
+    (inquiry?.budgetRange ? `*Budget:* ${inquiry.budgetRange}\n` : "") +
+    (inquiry?.projectBrief ? `*Brief:* ${inquiry.projectBrief}\n` : "") +
+    `----------------------------\n` +
+    `Hi LUCIAN, I just submitted this inquiry on your website!`;
+
+  const whatsappUrl = `https://wa.me/9779818587406?text=${encodeURIComponent(whatsappMessage)}`;
 
   const nextSteps = [
     {
@@ -51,12 +103,37 @@ function ConfirmationContent() {
       </div>
 
       <h1 className="text-3xl sm:text-5xl font-black text-primaryText tracking-tight mb-4">
-        Thank You!
+        Thank You, {clientName}!
       </h1>
 
-      <p className="text-base sm:text-lg text-mutedText max-w-xl leading-relaxed mb-12">
+      <p className="text-base sm:text-lg text-mutedText max-w-xl leading-relaxed mb-10">
         Your inquiry for <strong className="text-primaryText">{serviceName}</strong> has been received. We&apos;ll review it and get back to you within 24 hours via email or WhatsApp.
       </p>
+
+      {/* Direct WhatsApp Instant Action Banner */}
+      <div className="w-full p-6 sm:p-8 rounded-3xl bg-gold/10 border border-gold/40 mb-10 text-left flex flex-col sm:flex-row items-center justify-between gap-6 shadow-[0_0_30px_rgba(245,176,65,0.15)]">
+        <div>
+          <div className="text-xs font-mono text-gold uppercase tracking-wider mb-1">
+            Instant Direct Response
+          </div>
+          <h3 className="text-lg font-bold text-primaryText mb-1">
+            Want an immediate response on WhatsApp?
+          </h3>
+          <p className="text-xs sm:text-sm text-mutedText">
+            Send a copy of your inquiry directly to our founders on WhatsApp (+977 9818587406).
+          </p>
+        </div>
+
+        <a
+          href={whatsappUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gold text-background hover:bg-[#FFBE53] text-sm font-bold shadow-[0_0_20px_rgba(245,176,65,0.4)] transition-all flex-shrink-0 w-full sm:w-auto"
+        >
+          <Phone className="w-4 h-4" />
+          <span>Chat on WhatsApp now</span>
+        </a>
+      </div>
 
       {/* What Happens Next Section */}
       <div className="w-full text-left p-8 sm:p-10 rounded-3xl bg-surface border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] border-b-4 border-b-gold mb-10">
@@ -66,15 +143,14 @@ function ConfirmationContent() {
 
         <div className="space-y-6">
           {nextSteps.map((item, idx) => {
-            const StepIcon = item.icon;
             return (
               <div key={idx} className="flex items-start gap-4 pb-4 border-b border-white/5 last:border-0 last:pb-0">
                 <div className="w-10 h-10 rounded-lg bg-gold/10 text-gold flex items-center justify-center flex-shrink-0 font-mono font-bold text-sm">
                   {item.step}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-primaryText mb-1 flex items-center gap-2">
-                    <span>{item.title}</span>
+                  <h3 className="text-base font-bold text-primaryText mb-1">
+                    {item.title}
                   </h3>
                   <p className="text-xs sm:text-sm text-mutedText">{item.desc}</p>
                 </div>
@@ -84,30 +160,13 @@ function ConfirmationContent() {
         </div>
       </div>
 
-      {/* Two Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-        <Button asChild size="lg" className="w-full sm:w-auto text-base font-bold px-8 py-6 h-auto shadow-[0_0_25px_rgba(245,176,65,0.35)]">
+      {/* Bottom Button: Back to Home */}
+      <div className="w-full flex justify-center">
+        <Button asChild size="lg" variant="outline" className="text-base font-semibold px-8 py-6 h-auto">
           <Link href="/" className="gap-2">
             <span>Back to Home</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
-        </Button>
-
-        <Button
-          asChild
-          variant="outline"
-          size="lg"
-          className="w-full sm:w-auto text-base font-semibold px-8 py-6 h-auto border-gold/40 text-gold hover:bg-gold hover:text-background"
-        >
-          <a
-            href="https://wa.me/9779818587406?text=Hi%20LUCIAN,%20I%20just%20submitted%20a%20project%20inquiry%20on%20your%20website."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="gap-2"
-          >
-            <Phone className="w-4 h-4" />
-            <span>Chat on WhatsApp now</span>
-          </a>
         </Button>
       </div>
     </div>

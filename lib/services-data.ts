@@ -12,8 +12,7 @@ export interface ServiceDetail {
   number: string;
   title: string;
   description: string;
-  iconName: string;
-  icon: LucideIcon;
+  iconName: "Megaphone" | "Palette" | "Globe" | "Target" | "Cpu";
   deliverables: string[];
   summary: string;
 }
@@ -26,7 +25,6 @@ export const servicesList: ServiceDetail[] = [
     description:
       "Strategy, content, scheduling & growth that builds strong online presence.",
     iconName: "Megaphone",
-    icon: Megaphone,
     summary:
       "Full-spectrum organic audience growth, content calendar planning, graphic assets, and community engagement tailored for founders and modern businesses.",
     deliverables: [
@@ -43,7 +41,6 @@ export const servicesList: ServiceDetail[] = [
     description:
       "Eye-catching designs that communicate your brand and leave a lasting impact.",
     iconName: "Palette",
-    icon: Palette,
     summary:
       "Stunning visual identities, promotional posters, digital marketing assets, and brand collateral engineered to capture attention instantly.",
     deliverables: [
@@ -60,7 +57,6 @@ export const servicesList: ServiceDetail[] = [
     description:
       "Modern, responsive and user-friendly websites that drive results.",
     iconName: "Globe",
-    icon: Globe,
     summary:
       "High-performance, ultra-fast, conversion-focused websites engineered with modern frontend frameworks and flawless mobile responsiveness.",
     deliverables: [
@@ -77,7 +73,6 @@ export const servicesList: ServiceDetail[] = [
     description:
       "Ads, campaigns & marketing strategies that convert and maximize ROI.",
     iconName: "Target",
-    icon: Target,
     summary:
       "Data-backed paid advertising campaigns across Meta, Google, and TikTok designed to acquire high-value customers and scale return on ad spend.",
     deliverables: [
@@ -94,7 +89,6 @@ export const servicesList: ServiceDetail[] = [
     description:
       "From SEO to branding, video editing to automation – we do it all for your growth.",
     iconName: "Cpu",
-    icon: Cpu,
     summary:
       "Tailored digital infrastructure, workflow automations, video editing, search engine optimization, and custom technical consulting.",
     deliverables: [
@@ -105,6 +99,22 @@ export const servicesList: ServiceDetail[] = [
     ],
   },
 ];
+
+export function getServiceIcon(iconName: string): LucideIcon {
+  switch (iconName) {
+    case "Megaphone":
+      return Megaphone;
+    case "Palette":
+      return Palette;
+    case "Globe":
+      return Globe;
+    case "Target":
+      return Target;
+    case "Cpu":
+    default:
+      return Cpu;
+  }
+}
 
 export function getServiceBySlug(slug: string): ServiceDetail | undefined {
   return servicesList.find((service) => service.slug === slug);

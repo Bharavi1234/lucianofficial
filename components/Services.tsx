@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { servicesList } from "@/lib/services-data";
+import { servicesList, getServiceIcon } from "@/lib/services-data";
 import { Button } from "@/components/ui/button";
 
 export function Services() {
@@ -37,7 +37,7 @@ export function Services() {
           {/* Top Row: 3 Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {topServices.map((service) => {
-              const IconComponent = service.icon;
+              const IconComponent = getServiceIcon(service.iconName);
               return (
                 <div
                   key={service.slug}
@@ -82,7 +82,7 @@ export function Services() {
           {/* Bottom Row: 2 Cards Centered */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {bottomServices.map((service) => {
-              const IconComponent = service.icon;
+              const IconComponent = getServiceIcon(service.iconName);
               return (
                 <div
                   key={service.slug}
