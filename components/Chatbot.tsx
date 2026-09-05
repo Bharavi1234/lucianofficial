@@ -107,7 +107,7 @@ We do it all for your growth. Tell us what you need and we'll build a custom sol
   {
     keywords: ["person", "human", "real", "talk", "call", "connect", "speak", "agent", "live", "representative", "founder"],
     answer: `Of course! You can reach a real human at LUCIAN through:
-Email: lucianofficial636@gmail.com
+Email: lucianofficial07052026@gmail.com
 WhatsApp: 977 9818587406
 
 Or click 'Get Started' on any service card to submit an inquiry.
@@ -115,7 +115,7 @@ A real team member will get back to you within 24 hours!`,
   },
   {
     keywords: ["thanks", "thank you", "awesome", "great", "cool", "ok", "okay", "nice", "perfect", "good", "appreciate"],
-    answer: `You're very welcome! If you have any more questions, I'm always here to help. Ready to start your journey with LUCIAN? Just click 'Get Started' on any service card, or reach out directly via email (lucianofficial636@gmail.com) or WhatsApp (977 9818587406). We can't wait to work with you!`,
+    answer: `You're very welcome! If you have any more questions, I'm always here to help. Ready to start your journey with LUCIAN? Just click 'Get Started' on any service card, or reach out directly via email (lucianofficial07052026@gmail.com) or WhatsApp (977 9818587406). We can't wait to work with you!`,
   },
   {
     keywords: ["hello", "hi", "hey", "hola", "yo", "good morning", "good afternoon", "good evening", "hey there", "namaste"],
@@ -135,7 +135,7 @@ We'll get back to you within 24 hours via email or WhatsApp!`,
 const FALLBACK_ANSWER = `That's a great question! Let me point you to the best way to get answers. You can:
 • Browse our services above and click 'Get Started' for details
 • Visit our About page to learn more about us
-• Contact us directly via email (lucianofficial636@gmail.com) or WhatsApp (977 9818587406)
+• Contact us directly via email (lucianofficial07052026@gmail.com) or WhatsApp (977 9818587406)
 
 Is there a specific service you're interested in?`;
 
@@ -169,7 +169,7 @@ export function Chatbot() {
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText("lucianofficial636@gmail.com");
+    navigator.clipboard.writeText("lucianofficial07052026@gmail.com");
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2500);
   };
@@ -393,14 +393,14 @@ export function Chatbot() {
 
               <div className="flex items-center gap-1.5">
                 <a
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial636@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial07052026@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-gold flex items-center gap-1 transition-colors text-primaryText"
                   title="Open in Gmail"
                 >
                   <Mail className="w-3 h-3 text-gold" />
-                  <span>lucianofficial636@gmail.com</span>
+                  <span>lucianofficial07052026@gmail.com</span>
                   <ExternalLink className="w-2.5 h-2.5 text-mutedText" />
                 </a>
 

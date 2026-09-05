@@ -79,7 +79,7 @@ const jsonLd = {
     url: "https://lucianofficial.vercel.app",
     description:
       "360° digital solutions agency offering social media management, graphic design, web development, and digital marketing.",
-    email: "lucianofficial636@gmail.com",
+    email: "lucianofficial07052026@gmail.com",
     telephone: "+9779818587406",
     sameAs: [
       "https://www.instagram.com/_lucianofficial/",

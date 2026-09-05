@@ -212,13 +212,13 @@ export default function PrivacyPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <a
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial636@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial07052026@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gold/10 border border-gold/30 text-gold hover:bg-gold hover:text-background text-sm font-semibold transition-all"
                 >
                   <Mail className="w-4 h-4" />
-                  <span>lucianofficial636@gmail.com</span>
+                  <span>lucianofficial07052026@gmail.com</span>
                 </a>
                 <a
                   href="https://wa.me/9779818587406"

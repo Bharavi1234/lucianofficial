@@ -19,7 +19,7 @@ export function Contact() {
   const handleCopyEmail = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    navigator.clipboard.writeText("lucianofficial636@gmail.com");
+    navigator.clipboard.writeText("lucianofficial07052026@gmail.com");
     setCopied(true);
     setTimeout(() => setCopied(false), 3000);
   };
@@ -84,7 +84,7 @@ export function Contact() {
                       Official Email
                     </div>
                     <div className="text-sm font-bold text-primaryText group-hover:text-gold transition-colors break-all">
-                      lucianofficial636@gmail.com
+                      lucianofficial07052026@gmail.com
                     </div>
                   </div>
                 </div>
@@ -92,7 +92,7 @@ export function Contact() {
 
               <div className="flex items-center gap-2 pt-3 border-t border-white/5">
                 <a
-                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial636@gmail.com"
+                  href="https://mail.google.com/mail/?view=cm&fs=1&to=lucianofficial07052026@gmail.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-gold/10 text-gold hover:bg-gold hover:text-background text-xs font-mono font-semibold transition-colors"

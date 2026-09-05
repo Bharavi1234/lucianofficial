@@ -127,7 +127,7 @@ export function Navbar() {
                 <span>WhatsApp: 977 9818587406</span>
               </a>
               <a
-                href="mailto:lucianofficial636@gmail.com"
+                href="mailto:lucianofficial07052026@gmail.com"
                 className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-surface border border-white/10 text-primaryText text-sm font-mono"
               >
                 <Mail className="w-4 h-4 text-gold" />
