@@ -72,6 +72,8 @@ const organizationJsonLd = {
   ],
 };
 
+import { Chatbot } from "@/components/Chatbot";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -87,6 +89,7 @@ export default function RootLayout({
       </head>
       <body className="bg-background text-primaryText font-sans antialiased selection:bg-gold selection:text-black">
         {children}
+        <Chatbot />
       </body>
     </html>
   );
