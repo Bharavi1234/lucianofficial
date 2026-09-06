@@ -1,8 +1,9 @@
 "use client";
-
+ 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { MessageCircle, Menu, X, Mail, Instagram, Facebook } from "lucide-react";
+import { CurrencyToggle } from "@/components/CurrencyToggle";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,8 +62,10 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* Far right: Direct Phone Button + Mobile toggle */}
-        <div className="flex items-center gap-4">
+        {/* Far right: Currency Toggle + Direct Phone Button + Mobile toggle */}
+        <div className="flex items-center gap-3">
+          <CurrencyToggle className="hidden sm:inline-flex" />
+
           <a
             href="tel:+9779818587406"
             className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
@@ -88,6 +91,11 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-background/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 transition-all">
           <div className="flex flex-col gap-4">
+            <div className="pb-2 border-b border-white/10 flex items-center justify-between">
+              <span className="text-xs font-mono text-mutedText uppercase">Select Currency</span>
+              <CurrencyToggle />
+            </div>
+
             <Link
               href="/#services"
               onClick={() => setMobileMenuOpen(false)}

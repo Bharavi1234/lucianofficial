@@ -18,6 +18,7 @@ import {
 import { getServiceBySlug, getServiceIcon, servicesList } from "@/lib/services-data";
 import { SERVICE_PRICING, ServicePackage, formatPackagePrice } from "@/lib/pricing";
 import { useCurrency } from "@/lib/currency-context";
+import { ServiceCard } from "@/components/ServiceCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -287,67 +288,14 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
 
           {/* 3 Package Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
-            {pricingData.packages.map((pkg) => {
-              const priceDisplay = formatPackagePrice(pkg, currency);
-              const isSelected = selectedPackage.id === pkg.id;
-
-              return (
-                <div
-                  key={pkg.id}
-                  className={`relative flex flex-col justify-between p-8 rounded-3xl transition-all duration-300 ${
-                    pkg.isPopular
-                      ? "bg-surface border-2 border-gold shadow-[0_15px_40px_rgba(245,176,65,0.18)] -translate-y-1"
-                      : "bg-surface border border-white/10 hover:border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
-                  }`}
-                >
-                  {/* Most Popular Badge */}
-                  {pkg.isPopular && (
-                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold text-background text-[11px] font-mono font-black uppercase tracking-wider shadow-[0_0_15px_rgba(245,176,65,0.6)]">
-                      <Star className="w-3 h-3 fill-current" />
-                      <span>Most Popular</span>
-                    </div>
-                  )}
-
-                  <div>
-                    {/* Package Name */}
-                    <div className="text-xs font-mono uppercase tracking-widest text-mutedText mb-2">
-                      {pkg.name} Package
-                    </div>
-
-                    {/* Price in selected currency */}
-                    <div className="flex items-baseline gap-1 mb-6">
-                      <span className="text-3xl sm:text-4xl font-black text-gold tracking-tight font-mono">
-                        {priceDisplay}
-                      </span>
-                    </div>
-
-                    {/* Deliverables / Features */}
-                    <div className="pt-4 border-t border-white/10 space-y-3 mb-8">
-                      {pkg.features.map((feat, idx) => (
-                        <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-primaryText">
-                          <Check className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
-                          <span>{feat}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Select Button */}
-                  <Button
-                    type="button"
-                    onClick={() => handlePackageSelect(pkg)}
-                    className={`w-full h-12 font-bold transition-all ${
-                      pkg.isPopular
-                        ? "bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_20px_rgba(245,176,65,0.35)]"
-                        : "bg-white/10 text-white hover:bg-gold hover:text-background border border-white/15 hover:border-gold"
-                    }`}
-                  >
-                    <span>Select {pkg.name}</span>
-                    <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              );
-            })}
+            {pricingData.packages.map((pkg) => (
+              <ServiceCard
+                key={pkg.id}
+                packageData={pkg}
+                isSelected={selectedPackage.id === pkg.id}
+                onSelect={handlePackageSelect}
+              />
+            ))}
           </div>
         </div>
       )}

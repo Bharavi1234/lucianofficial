@@ -379,7 +379,7 @@ export function Chatbot() {
       updateContext({ lastServiceAsked: "Social Media Management" });
       const s = SERVICES_DATA.smm;
       return {
-        text: `**${s.title}**\n• **Description:** ${s.description}\n• **Pricing:** ${s.pricing}\n• **Platforms:** Instagram, Facebook, TikTok, YouTube, LinkedIn & More.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
+        text: `**${s.title}**\n• **Pricing Tiers:**\n  - Basic: ₹6,000/mo ($35/mo)\n  - Standard [★ Most Popular]: ₹15,000/mo ($75/mo)\n  - Premium: ₹30,000/mo ($150/mo)\n• **Description:** ${s.description}\n• **Platforms:** Instagram, Facebook, TikTok, YouTube, LinkedIn & More.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
         type: "service_card" as const,
         serviceData: s,
       };
@@ -397,7 +397,7 @@ export function Chatbot() {
       updateContext({ lastServiceAsked: "Graphic Design & Poster Making" });
       const s = SERVICES_DATA.design;
       return {
-        text: `**${s.title}**\n• **Description:** ${s.description}\n• **Pricing:** ${s.pricing}\n• **Deliverables:** High-impact social posts, event posters, banners, brand guidelines.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
+        text: `**${s.title}**\n• **Pricing Tiers:**\n  - Basic: ₹2,500/design ($25/design)\n  - Standard [★ Most Popular]: ₹6,000/design ($55/design)\n  - Premium: ₹15,000/design ($150/design)\n• **Description:** ${s.description}\n• **Deliverables:** High-impact social posts, event posters, banners, brand guidelines.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
         type: "service_card" as const,
         serviceData: s,
       };
@@ -415,7 +415,7 @@ export function Chatbot() {
       updateContext({ lastServiceAsked: "Website Design & Development" });
       const s = SERVICES_DATA.web;
       return {
-        text: `**${s.title}**\n• **Description:** ${s.description}\n• **Pricing:** ${s.pricing}\n• **Features:** Next.js / React performance, mobile-first responsive design, high conversion UX, SEO foundation.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
+        text: `**${s.title}**\n• **Pricing Tiers:**\n  - Basic (1-page): ₹20,000 ($200)\n  - Standard (5-page) [★ Most Popular]: ₹50,000 ($500)\n  - Premium (10-page / E-commerce): ₹100,000 ($1,000)\n• **Description:** ${s.description}\n• **Features:** Next.js / React performance, mobile-first responsive design, high conversion UX, SEO foundation.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
         type: "service_card" as const,
         serviceData: s,
       };
@@ -434,7 +434,7 @@ export function Chatbot() {
       updateContext({ lastServiceAsked: "Digital Marketing & Advertising" });
       const s = SERVICES_DATA.marketing;
       return {
-        text: `**${s.title}**\n• **Description:** ${s.description}\n• **Pricing:** ${s.pricing}\n• **Platforms:** Meta Ads, Google Ads, TikTok Ads with ROI optimization & weekly analytics.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
+        text: `**${s.title}**\n• **Pricing Tiers:**\n  - Basic: ₹15,000/mo ($200/mo)\n  - Standard [★ Most Popular]: ₹30,000/mo ($400/mo)\n  - Premium: ₹55,000/mo ($700/mo)\n• **Description:** ${s.description}\n• **Platforms:** Meta Ads, Google Ads, TikTok Ads with ROI optimization & weekly analytics.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
         type: "service_card" as const,
         serviceData: s,
       };
@@ -450,7 +450,7 @@ export function Chatbot() {
       updateContext({ lastServiceAsked: "Other Digital Solutions" });
       const s = SERVICES_DATA.other;
       return {
-        text: `**${s.title}**\n• **Description:** ${s.description}\n• **Pricing:** ${s.pricing}\n• **Scope:** Search Engine Optimization, automated lead workflows, short-form editing.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
+        text: `**${s.title}**\n• **Pricing Tiers:**\n  - Basic: ₹4,000/hr ($50/hr)\n  - Standard [★ Most Popular]: ₹15,000/project ($150/project)\n  - Premium: ₹40,000/project ($400/project)\n• **Description:** ${s.description}\n• **Scope:** Search Engine Optimization, automated lead workflows, short-form editing.\n\nWould you like me to connect you with our team via WhatsApp or Email to get started on this?`,
         type: "service_card" as const,
         serviceData: s,
       };
@@ -502,6 +502,32 @@ export function Chatbot() {
       };
     }
 
+    // Most Popular Packages Inquiry
+    if (
+      lower.includes("most popular") ||
+      lower.includes("best value") ||
+      lower.includes("recommended package") ||
+      lower.includes("popular package")
+    ) {
+      return {
+        text: `Here are LUCIAN's Most Popular (Standard) Packages offering the best value-for-money:\n\n⭐ **Social Media Management (Standard):** ₹15,000/mo ($75/mo)\n• 3 platforms, 10 posts + 3 reels/week, 15 days active management & growth strategy.\n\n⭐ **Website Design & Development (Standard):** ₹50,000 ($500)\n• 5-page custom high-performance website, SEO optimized, 1 month post-launch support.\n\n⭐ **Digital Marketing & Advertising (Standard):** ₹30,000/mo ($400/mo)\n• 3 platforms (Meta, Google, TikTok), A/B creative testing & conversion funnels.\n\n⭐ **Graphic Design (Standard):** ₹6,000/design ($55/design)\n• 3 custom designs with source files & brand typography.\n\n⭐ **Other Solutions (Standard):** ₹15,000/project ($150/project)\n• Full SEO content strategy, automated lead pipeline, or promo video edit.\n\nWould you like to get started on any of these tiers?`,
+        type: "services_overview" as const,
+      };
+    }
+
+    // Exchange Rate & Pricing Model FAQ
+    if (
+      lower.includes("exchange rate") ||
+      lower.includes("conversion rate") ||
+      lower.includes("how do you convert") ||
+      lower.includes("currency conversion")
+    ) {
+      return {
+        text: `Rather than using a fixed USD to NPR exchange rate conversion (e.g. \$1 = ₹130), LUCIAN provides tailored, market-competitive pricing for Nepal to ensure local businesses receive premium digital agency services at local industry rates. International clients are billed in USD.`,
+        type: "text" as const,
+      };
+    }
+
     // Currency Difference / Why Different FAQ
     if (
       lower.includes("why are npr") ||
@@ -537,7 +563,7 @@ export function Chatbot() {
       lower.includes("price")
     ) {
       return {
-        text: `Here is LUCIAN's complete 360° Digital Solutions Suite:\n\n1. **Social Media Management:** Starting at ₹6,000 ($35)\n2. **Graphic Design & Poster Making:** Starting at ₹2,500 ($25)\n3. **Website Design & Development:** Starting at ₹20,000 ($200)\n4. **Digital Marketing & Advertising:** Starting at ₹15,000/month ($200/mo)\n5. **Other Digital Solutions (SEO, Automation, Video):** Starting at ₹4,000/hour ($50/hr)\n\n*Platforms we work on: Instagram, Facebook, TikTok, YouTube, LinkedIn & More.*\n\nSelect any service below or tap 'Get Started' for a tailored quote!`,
+        text: `Here is LUCIAN's complete 360° Digital Solutions Suite with dual-currency rates:\n\n1. **Social Media Management:** Starting at ₹6,000/mo ($35/mo) | Standard: ₹15,000/mo ($75/mo) [★ Most Popular] | Premium: ₹30,000/mo ($150/mo)\n2. **Graphic Design & Poster Making:** Starting at ₹2,500 ($25) | Standard: ₹6,000 ($55) [★ Most Popular] | Premium: ₹15,000 ($150)\n3. **Website Design & Development:** Starting at ₹20,000 ($200) | Standard: ₹50,000 ($500) [★ Most Popular] | Premium: ₹100,000 ($1,000)\n4. **Digital Marketing & Advertising:** Starting at ₹15,000/mo ($200/mo) | Standard: ₹30,000/mo ($400/mo) [★ Most Popular] | Premium: ₹55,000/mo ($700/mo)\n5. **Other Digital Solutions:** Starting at ₹4,000/hr ($50/hr) | Standard: ₹15,000/proj ($150/proj) [★ Most Popular] | Premium: ₹40,000/proj ($400/proj)\n6. **Complete Digital Pro:** Starting at ₹85,000 ($1,000)\n\n*Platforms: Instagram, Facebook, TikTok, YouTube, Google, LinkedIn & More.*`,
         type: "services_overview" as const,
       };
     }
