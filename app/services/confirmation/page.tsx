@@ -19,6 +19,9 @@ import { Button } from "@/components/ui/button";
 
 interface InquiryData {
   serviceName?: string;
+  packageName?: string;
+  packagePrice?: string;
+  currency?: string;
   fullName?: string;
   email?: string;
   phone?: string;
@@ -31,6 +34,7 @@ interface InquiryData {
 function ConfirmationContent() {
   const searchParams = useSearchParams();
   const urlService = searchParams.get("service") || "Digital Solutions";
+  const urlPackage = searchParams.get("package") || "";
   const urlName = searchParams.get("name") || "";
 
   const [inquiry, setInquiry] = useState<InquiryData | null>(null);
@@ -49,11 +53,14 @@ function ConfirmationContent() {
   }, []);
 
   const serviceName = inquiry?.serviceName || urlService;
+  const packageName = inquiry?.packageName || urlPackage;
+  const packagePrice = inquiry?.packagePrice || "";
   const clientName = inquiry?.fullName || urlName || "Valued Client";
 
   const whatsappMessage = `*CONFIRMED PROJECT INQUIRY FOR LUCIAN*\n` +
     `----------------------------\n` +
     `*Service:* ${serviceName}\n` +
+    (packageName ? `*Package:* ${packageName} ${packagePrice ? `(${packagePrice})` : ""}\n` : "") +
     `*Client:* ${clientName}\n` +
     (inquiry?.email ? `*Email:* ${inquiry.email}\n` : "") +
     (inquiry?.phone ? `*Phone:* ${inquiry.phone}\n` : "") +

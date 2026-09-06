@@ -73,6 +73,7 @@ const organizationJsonLd = {
 };
 
 import { Chatbot } from "@/components/Chatbot";
+import { CurrencyProvider } from "@/lib/currency-context";
 
 export default function RootLayout({
   children,
@@ -88,8 +89,10 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-background text-primaryText font-sans antialiased selection:bg-gold selection:text-black">
-        {children}
-        <Chatbot />
+        <CurrencyProvider>
+          {children}
+          <Chatbot />
+        </CurrencyProvider>
       </body>
     </html>
   );

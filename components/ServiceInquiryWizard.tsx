@@ -12,8 +12,12 @@ import {
   Edit3,
   Sparkles,
   AlertCircle,
+  Star,
+  Check,
 } from "lucide-react";
 import { getServiceBySlug, getServiceIcon, servicesList } from "@/lib/services-data";
+import { SERVICE_PRICING, ServicePackage } from "@/lib/pricing";
+import { useCurrency } from "@/lib/currency-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -25,17 +29,22 @@ interface ServiceInquiryWizardProps {
 export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const router = useRouter();
   const service = getServiceBySlug(slug) || servicesList[0];
+  const { currency, formatPrice } = useCurrency();
 
-  // Wizard state: 1 = Confirm Service, 2 = Tell Us About You, 3 = Review & Submit
+  const pricingData = SERVICE_PRICING[slug] || SERVICE_PRICING["social-media-management"];
+  const defaultPackage = pricingData.packages.find((p) => p.isPopular) || pricingData.packages[0];
+
+  // Wizard state: 1 = Select Package, 2 = Tell Us About You, 3 = Review & Submit
   const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [selectedPackage, setSelectedPackage] = useState<ServicePackage>(defaultPackage);
 
-  // Form inputs state (auto-preserved across steps)
+  // Form inputs state
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     projectBrief: "",
-    budgetRange: "$1k–2.5k",
+    budgetRange: "Within Package Price",
     howFound: "Instagram",
   });
 
@@ -60,24 +69,43 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
 
   const isStep2Valid = isNameValid && isEmailValid && isPhoneValid && isBriefValid;
 
+  const formattedSelectedPrice = formatPrice(
+    selectedPackage.usdPrice,
+    selectedPackage.unit
+  );
+
   // Pre-filled WhatsApp message for direct instant chat
   const whatsappPreFilledUrl = `https://wa.me/9779818587406?text=${encodeURIComponent(
     `*NEW PROJECT INQUIRY FOR LUCIAN*\n` +
       `----------------------------\n` +
       `*Service:* ${service.title}\n` +
+      `*Package:* ${selectedPackage.name} (${formattedSelectedPrice})\n` +
       `*Name:* ${formData.fullName || "Prospective Client"}\n` +
       `*Email:* ${formData.email || "Not specified"}\n` +
       `*Phone:* ${formData.phone.trim() || "Not specified"}\n` +
       `*Budget:* ${formData.budgetRange}\n` +
-      `*Brief:* ${formData.projectBrief || "Interested in learning more about this service."}\n` +
+      `*Brief:* ${formData.projectBrief || "Interested in this package."}\n` +
       `----------------------------\n` +
       `Sent via lucianofficial.vercel.app`
   )}`;
+
+  const handlePackageSelect = (pkg: ServicePackage) => {
+    setSelectedPackage(pkg);
+    setStep(2);
+  };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitError(null);
+
+    const submissionPayload = {
+      serviceName: service.title,
+      packageName: selectedPackage.name,
+      packagePrice: formattedSelectedPrice,
+      currency,
+      ...formData,
+    };
 
     try {
       // 1. Submit to internal Next.js API route (/api/inquiry)
@@ -86,10 +114,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          serviceName: service.title,
-          ...formData,
-        }),
+        body: JSON.stringify(submissionPayload),
       }).catch((err) => console.log("API notice:", err));
 
       // 2. Submit directly to Formspree endpoint (mqpklvrn)
@@ -100,10 +125,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          serviceName: service.title,
-          ...formData,
-        }),
+        body: JSON.stringify(submissionPayload),
       }).catch((err) => console.log("Formspree notice:", err));
 
       // Save inquiry in session storage for the confirmation page
@@ -111,8 +133,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         sessionStorage.setItem(
           "lucian_last_inquiry",
           JSON.stringify({
-            serviceName: service.title,
-            ...formData,
+            ...submissionPayload,
             submittedAt: new Date().toLocaleTimeString(),
           })
         );
@@ -120,14 +141,18 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
 
       // Navigate to confirmation page
       router.push(
-        `/services/confirmation?service=${encodeURIComponent(service.title)}&name=${encodeURIComponent(
+        `/services/confirmation?service=${encodeURIComponent(
+          service.title
+        )}&package=${encodeURIComponent(selectedPackage.name)}&name=${encodeURIComponent(
           formData.fullName
         )}`
       );
     } catch (err) {
       console.error("Submission error:", err);
       router.push(
-        `/services/confirmation?service=${encodeURIComponent(service.title)}&name=${encodeURIComponent(
+        `/services/confirmation?service=${encodeURIComponent(
+          service.title
+        )}&package=${encodeURIComponent(selectedPackage.name)}&name=${encodeURIComponent(
           formData.fullName
         )}`
       );
@@ -149,7 +174,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const IconComponent = getServiceIcon(service.iconName);
 
   return (
-    <div className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto w-full relative z-10">
+    <div className="flex-grow pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-10">
       {/* Top Back to Services link & Step Indicator */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-white/10">
         <Link
@@ -169,7 +194,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
                 : "bg-surface border border-white/10 text-mutedText"
             }`}
           >
-            1. Confirm
+            1. Select Package
           </span>
           <span className="text-mutedText/40">&rarr;</span>
           <span
@@ -195,22 +220,26 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
       </div>
 
       {/* =========================================================================
-          STEP 1: CONFIRM SERVICE (1 CLICK)
+          STEP 1: SELECT PACKAGE (3 CARDS)
           ========================================================================= */}
       {step === 1 && (
-        <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-b-4 border-b-gold animate-in fade-in duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
+        <div className="space-y-10 animate-in fade-in duration-300">
+          {/* Header */}
+          <div className="p-8 sm:p-10 rounded-3xl bg-surface border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.7)] flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-2xl bg-gold/10 border border-gold/30 text-gold flex items-center justify-center shadow-[0_0_20px_rgba(245,176,65,0.2)] flex-shrink-0">
                 <IconComponent className="w-8 h-8" />
               </div>
               <div>
                 <div className="text-xs font-mono text-gold uppercase tracking-wider mb-1">
-                  Selected Solution
+                  Step 1 &middot; Choose Your Tier
                 </div>
                 <h1 className="text-2xl sm:text-3xl font-black text-primaryText">
                   {service.title}
                 </h1>
+                <p className="text-sm text-mutedText mt-1 max-w-2xl font-light">
+                  {service.description}
+                </p>
               </div>
             </div>
 
@@ -219,43 +248,76 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
               href={whatsappPreFilledUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-mono text-gold hover:underline p-2 rounded-lg bg-gold/5 border border-gold/20"
+              className="inline-flex items-center gap-2 text-xs font-mono text-gold hover:underline p-2.5 rounded-lg bg-gold/5 border border-gold/20 flex-shrink-0"
             >
               <Phone className="w-3.5 h-3.5" />
               <span>Prefer WhatsApp? Chat now</span>
             </a>
           </div>
 
-          <p className="text-base sm:text-lg text-mutedText leading-relaxed mb-8 font-light">
-            {service.description}
-          </p>
+          {/* 3 Package Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {pricingData.packages.map((pkg) => {
+              const priceDisplay = formatPrice(pkg.usdPrice, pkg.unit);
+              const isSelected = selectedPackage.id === pkg.id;
 
-          {/* What's Included */}
-          <div className="p-6 rounded-2xl bg-background/60 border border-white/5 mb-10">
-            <h3 className="text-sm font-mono text-gold uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
-              <span>What&apos;s Included In This Solution</span>
-            </h3>
-            <ul className="space-y-3">
-              {service.deliverables.map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-primaryText">
-                  <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-0.5" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+              return (
+                <div
+                  key={pkg.id}
+                  className={`relative flex flex-col justify-between p-8 rounded-3xl transition-all duration-300 ${
+                    pkg.isPopular
+                      ? "bg-surface border-2 border-gold shadow-[0_15px_40px_rgba(245,176,65,0.18)] -translate-y-1"
+                      : "bg-surface border border-white/10 hover:border-gold/40 shadow-[0_10px_30px_rgba(0,0,0,0.6)]"
+                  }`}
+                >
+                  {/* Most Popular Badge */}
+                  {pkg.isPopular && (
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold text-background text-[11px] font-mono font-black uppercase tracking-wider shadow-[0_0_15px_rgba(245,176,65,0.6)]">
+                      <Star className="w-3 h-3 fill-current" />
+                      <span>Most Popular</span>
+                    </div>
+                  )}
 
-          {/* Actions */}
-          <div className="space-y-4">
-            <Button
-              onClick={() => setStep(2)}
-              size="lg"
-              className="w-full text-base font-bold h-14 bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_25px_rgba(245,176,65,0.35)]"
-            >
-              <span>Yes, let&apos;s do this!</span>
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+                  <div>
+                    {/* Package Name */}
+                    <div className="text-xs font-mono uppercase tracking-widest text-mutedText mb-2">
+                      {pkg.name} Package
+                    </div>
+
+                    {/* Price in selected currency */}
+                    <div className="flex items-baseline gap-1 mb-6">
+                      <span className="text-3xl sm:text-4xl font-black text-gold tracking-tight font-mono">
+                        {priceDisplay}
+                      </span>
+                    </div>
+
+                    {/* Deliverables / Features */}
+                    <div className="pt-4 border-t border-white/10 space-y-3 mb-8">
+                      {pkg.features.map((feat, idx) => (
+                        <div key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-primaryText">
+                          <Check className="w-4 h-4 text-gold flex-shrink-0 mt-0.5" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Select Button */}
+                  <Button
+                    type="button"
+                    onClick={() => handlePackageSelect(pkg)}
+                    className={`w-full h-12 font-bold transition-all ${
+                      pkg.isPopular
+                        ? "bg-gold text-background hover:bg-[#FFBE53] shadow-[0_0_20px_rgba(245,176,65,0.35)]"
+                        : "bg-white/10 text-white hover:bg-gold hover:text-background border border-white/15 hover:border-gold"
+                    }`}
+                  >
+                    <span>Select {pkg.name}</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -264,7 +326,24 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           STEP 2: TELL US ABOUT YOU
           ========================================================================= */}
       {step === 2 && (
-        <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-b-4 border-b-gold animate-in fade-in duration-300">
+        <div className="max-w-3xl mx-auto p-8 sm:p-12 rounded-3xl bg-surface border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-b-4 border-b-gold animate-in fade-in duration-300">
+          {/* Selected Package Banner */}
+          <div className="flex items-center justify-between p-4 rounded-xl bg-gold/10 border border-gold/30 mb-8">
+            <div>
+              <div className="text-[10px] font-mono text-gold uppercase">Selected Tier</div>
+              <div className="text-sm sm:text-base font-bold text-white">
+                {service.title} &middot; <span className="text-gold">{selectedPackage.name} ({formattedSelectedPrice})</span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="text-xs font-mono text-gold underline hover:text-[#FFBE53]"
+            >
+              Change Tier
+            </button>
+          </div>
+
           <div className="mb-8">
             <div className="text-xs font-mono text-gold uppercase tracking-wider mb-1">
               Step 2 of 3 &middot; Project Details
@@ -351,10 +430,9 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
                   onChange={(e) => setFormData({ ...formData, budgetRange: e.target.value })}
                   className="flex h-12 w-full rounded-md border border-white/10 bg-[#0A0A0A] px-4 py-2 text-sm text-primaryText focus-visible:outline-none focus-visible:border-gold focus-visible:ring-1 focus-visible:ring-gold transition-colors"
                 >
-                  <option value="$500–1k">$500 &ndash; $1,000</option>
-                  <option value="$1k–2.5k">$1,000 &ndash; $2,500 (Recommended)</option>
-                  <option value="$2.5k–5k">$2,500 &ndash; $5,000</option>
-                  <option value="$5k+">$5,000+</option>
+                  <option value="Within Package Price">Matches Package ({formattedSelectedPrice})</option>
+                  <option value="Flexible / Scaling">Flexible / Scaling</option>
+                  <option value="Higher Scope Tier">Higher Scope Tier</option>
                 </select>
               </div>
             </div>
@@ -370,7 +448,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
               <Textarea
                 id="projectBrief"
                 rows={4}
-                placeholder="Briefly describe your goals, required features or deliverables, and desired launch timeline..."
+                placeholder="Briefly describe your goals, required deliverables, brand details, and desired launch timeline..."
                 value={formData.projectBrief}
                 onBlur={() => setTouched({ ...touched, projectBrief: true })}
                 onChange={(e) => setFormData({ ...formData, projectBrief: e.target.value })}
@@ -427,7 +505,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           STEP 3: REVIEW & SUBMIT
           ========================================================================= */}
       {step === 3 && (
-        <div className="p-8 sm:p-12 rounded-3xl bg-surface border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-b-4 border-b-gold animate-in fade-in duration-300">
+        <div className="max-w-3xl mx-auto p-8 sm:p-12 rounded-3xl bg-surface border border-white/10 shadow-[0_25px_60px_rgba(0,0,0,0.8)] border-b-4 border-b-gold animate-in fade-in duration-300">
           <div className="mb-8">
             <div className="text-xs font-mono text-gold uppercase tracking-wider mb-1">
               Step 3 of 3 &middot; Final Verification
@@ -439,11 +517,13 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
 
           {/* Verification Summary Card */}
           <div className="space-y-6 bg-background/60 p-6 sm:p-8 rounded-2xl border border-white/10 mb-8">
-            {/* Service */}
+            {/* Service & Package */}
             <div className="flex items-center justify-between pb-4 border-b border-white/5">
               <div>
-                <div className="text-xs font-mono text-mutedText uppercase">Selected Service</div>
-                <div className="text-base sm:text-lg font-bold text-gold">{service.title}</div>
+                <div className="text-xs font-mono text-mutedText uppercase">Selected Package</div>
+                <div className="text-base sm:text-lg font-bold text-primaryText">
+                  {service.title} &middot; <span className="text-gold">{selectedPackage.name} ({formattedSelectedPrice})</span>
+                </div>
               </div>
               <button
                 type="button"
@@ -537,7 +617,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
                 className="inline-flex items-center justify-center gap-2 h-12 rounded-md border border-gold/40 text-gold bg-gold/5 hover:bg-gold hover:text-background text-sm font-semibold transition-all"
               >
                 <Phone className="w-4 h-4" />
-                <span>Send on WhatsApp</span>
+                <span>Chat on WhatsApp instead</span>
               </a>
             </div>
           </form>

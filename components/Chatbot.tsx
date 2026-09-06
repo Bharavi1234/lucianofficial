@@ -28,30 +28,147 @@ interface QAEntry {
   answer: string;
 }
 
-// 12 Rule-Based Q&A entries
+// Rule-Based Q&A Database with Dual-Currency & Pricing integration
 const QA_DATABASE: QAEntry[] = [
+  {
+    keywords: ["prices in npr", "npr", "nepali", "nepal price", "rs", "rupee", "in npr"],
+    answer: `Here are our prices in NPR (₹):
+
+Social Media Management:
+- Basic: ₹4,550
+- Standard: ₹9,750 (Most Popular)
+- Premium: ₹19,500
+
+Graphic Design & Poster Making:
+- Basic: ₹3,250
+- Standard: ₹7,150
+- Premium: ₹19,500
+
+Website Design & Development:
+- Basic: ₹26,000
+- Standard: ₹65,000
+- Premium: ₹130,000
+
+Digital Marketing & Advertising:
+- Basic: ₹26,000/month
+- Standard: ₹52,000/month
+- Premium: ₹91,000/month
+
+Other Digital Solutions:
+- Basic: ₹6,500/hour
+- Standard: ₹19,500/project
+- Premium: ₹52,000/project
+
+Complete Digital Pro:
+- Starting at ₹130,000 (custom quote)
+
+These prices are calculated at 1 USD = 130 NPR. Use the country selector in the top right to switch between currencies.`,
+  },
+  {
+    keywords: ["prices in usd", "usd", "dollar", "in usd", "dollar price", "usd price"],
+    answer: `Here are our prices in USD ($):
+
+Social Media Management:
+- Basic: $35
+- Standard: $75 (Most Popular)
+- Premium: $150
+
+Graphic Design & Poster Making:
+- Basic: $25
+- Standard: $55
+- Premium: $150
+
+Website Design & Development:
+- Basic: $200
+- Standard: $500
+- Premium: $1,000
+
+Digital Marketing & Advertising:
+- Basic: $200/month
+- Standard: $400/month
+- Premium: $700/month
+
+Other Digital Solutions:
+- Basic: $50/hour
+- Standard: $150/project
+- Premium: $400/project
+
+Complete Digital Pro:
+- Starting at $1,000 (custom quote)
+
+Use the country selector in the top right to switch to NPR prices.`,
+  },
+  {
+    keywords: ["how much is social media", "social media management price", "social media cost", "smm cost", "smm price"],
+    answer: `Our Social Media Management packages:
+- Basic: $35 (2 platforms, 5 posts + 1 reel, 7 days)
+- Standard: $75 (3 platforms, 10 posts + 3 reels, 15 days) ← Most Popular
+- Premium: $150 (5 platforms, 20 posts + 6 reels, 30 days)
+
+Prices shown in USD. Use the country selector above to switch to NPR (₹) prices!`,
+  },
+  {
+    keywords: ["most popular", "popular package", "best package", "popular choice", "which package"],
+    answer: `The Standard package is our most popular choice across all services! For Social Media Management, it's $75/month (or ₹9,750 in NPR) for:
+- 3 platforms
+- 10 posts + 3 reels
+- 15 days of management
+- Engagement with followers
+- Action plan
+- Basic reporting
+- 2 revisions
+
+It offers the perfect balance of features and value. You can select it on any service page!`,
+  },
+  {
+    keywords: ["exchange rate", "conversion rate", "usd to npr", "npr to usd", "1 usd"],
+    answer: `The current exchange rate we use is:
+1 USD = 130 NPR
+
+This means:
+- $35 = ₹4,550
+- $75 = ₹9,750
+- $150 = ₹19,500
+- $200 = ₹26,000
+- $500 = ₹65,000
+- $1,000 = ₹130,000
+
+We update this rate periodically to stay current. Use the country selector in the top right to switch between currencies.`,
+  },
+  {
+    keywords: ["complete digital pro", "digital pro", "all in one pro", "pro bundle"],
+    answer: `Complete Digital Pro is our comprehensive 360° all-in-one digital growth package starting at $1,000 (or ₹130,000 in NPR). It integrates full-stack social media management, complete brand graphics, high-performance website development, targeted multi-channel ad campaigns, and automated SEO infrastructure. Contact us directly or start an inquiry for a custom quote!`,
+  },
   {
     keywords: ["service", "offer", "do you do", "what do you provide", "what services", "solutions"],
     answer: `LUCIAN offers 5 core digital solutions:
-1. Social Media Management – Strategy, content, scheduling & growth
-2. Graphic Design & Poster Making – Eye-catching brand designs
-3. Website Design & Development – Modern, responsive websites
-4. Digital Marketing & Advertising – Campaigns that maximize ROI
-5. Other Digital Solutions – SEO, branding, video editing & automation
+1. Social Media Management – Strategy, content, scheduling & growth (from $35 / ₹4,550)
+2. Graphic Design & Poster Making – Eye-catching brand designs (from $25 / ₹3,250)
+3. Website Design & Development – Modern, responsive websites (from $200 / ₹26,000)
+4. Digital Marketing & Advertising – Campaigns that maximize ROI (from $200/mo / ₹26,000/mo)
+5. Other Digital Solutions – SEO, branding, video editing & automation (from $50/hr / ₹6,500/hr)
 
 Which service are you most interested in?`,
   },
   {
     keywords: ["price", "cost", "charge", "how much", "quote", "pricing", "budget", "expensive", "affordable", "rate", "fee"],
-    answer: `Great question! Our pricing varies based on your specific needs – project scope, timeline, and requirements all factor in. The best way to get an accurate quote is to start an inquiry! Click 'Get Started' on any service card, fill out the brief details, and we'll get back to you with a custom quote within 24 hours.`,
+    answer: `Our pricing is transparent and flexible in both USD ($) and NPR (₹):
+• Social Media Management: Starting at $35 / ₹4,550
+• Graphic Design & Posters: Starting at $25 / ₹3,250
+• Website Development: Starting at $200 / ₹26,000
+• Digital Marketing: Starting at $200/mo / ₹26,000/mo
+• Other Solutions: Starting at $50/hr / ₹6,500/hr
+
+Click 'Show me prices in NPR' or 'Show me prices in USD' below for full package breakdowns!`,
   },
   {
     keywords: ["start", "get started", "how to begin", "process", "steps", "begin", "where to start", "onboard"],
     answer: `Getting started with LUCIAN is easy!
 1. Browse our services and pick the one you need
 2. Click 'Get Started' on that service card
-3. Fill out our quick 3-step inquiry form
-4. We'll review and get back to you within 24 hours
+3. Choose your package (Basic, Standard, or Premium)
+4. Fill out our quick inquiry form
+5. We'll review and get back to you within 24 hours
 
 Or if you prefer, you can WhatsApp us directly at 977 9818587406!`,
   },
@@ -59,93 +176,94 @@ Or if you prefer, you can WhatsApp us directly at 977 9818587406!`,
     keywords: ["social media", "instagram", "facebook", "tiktok", "youtube", "linkedin", "smm", "social", "post", "reel"],
     answer: `Yes! Social Media Management is one of our core services. We handle:
 • Content strategy & planning
-• Post creation & scheduling
-• Audience engagement
-• Growth analytics
+• Post creation & scheduling (Reels, Carousels, Stories)
+• Community & audience engagement
+• Growth analytics & monthly reports
 
-We help brands build a strong online presence across Instagram, Facebook, TikTok, YouTube, and LinkedIn. Ready to grow your social presence? Click 'Get Started' on the Social Media Management card!`,
+Tiers start from $35 (₹4,550) up to $150 (₹19,500). Click 'Get Started' on the Social Media Management card to choose your tier!`,
   },
   {
-    keywords: ["website", "web", "build website", "web development", "design website", "site", "landing page", "frontend", "coder"],
+    keywords: ["website", "web", "build website", "web development", "design website", "site", "landing page", "frontend"],
     answer: `Absolutely! Our Website Design & Development service creates:
-• Modern, responsive websites
-• User-friendly interfaces
-• SEO-optimized sites
-• High conversion rates
+• Modern, responsive websites built with Next.js / React
+• Bespoke UI/UX engineered for high conversion rates
+• Technical SEO foundation & blazing-fast load speeds
+• Seamless WhatsApp & email inquiry integrations
 
-We build websites that look great and drive results. Want to see what we can do for you? Start an inquiry and tell us about your project!`,
+Packages: Basic ($200 / ₹26k), Standard ($500 / ₹65k), Premium ($1,000 / ₹130k). Start an inquiry to launch your site!`,
   },
   {
-    keywords: ["graphic", "design", "poster", "branding", "logo", "visual", "creative", "art", "illustration", "banner", "flyer"],
+    keywords: ["graphic", "design", "poster", "branding", "logo", "visual", "creative", "art", "flyer"],
     answer: `Yes! Our Graphic Design & Poster Making service delivers:
-• Eye-catching designs that communicate your brand
-• Logos, social media graphics, marketing materials
-• Brand guidelines and visual identity
+• Eye-catching visual assets that communicate your brand
+• Event posters, social ad graphics, banners & collateral
+• Complete typography & brand identity guidelines
 
-We make sure your brand leaves a lasting impact. Click 'Get Started' on the Graphic Design & Poster Making card!`,
+Packages: Basic ($25 / ₹3,250), Standard ($55 / ₹7,150), Premium ($150 / ₹19,500). Click 'Get Started' on the Graphic Design card!`,
   },
   {
-    keywords: ["digital marketing", "ads", "advertising", "campaign", "marketing", "roi", "conversion", "ad", "meta ads", "google ads"],
+    keywords: ["digital marketing", "ads", "advertising", "campaign", "marketing", "roi", "conversion", "meta ads", "google ads"],
     answer: `Our Digital Marketing & Advertising service includes:
-• Targeted ad campaigns (social media, search, display)
-• Data-driven strategies
-• ROI optimization
-• Performance tracking and reporting
+• Targeted ad campaigns across Meta, Google & TikTok
+• High-converting ad copy & dynamic creatives
+• Continuous A/B testing & ROI optimization
+• Transparent ROAS analytics & reporting
 
-We create campaigns that convert and maximize your return on investment!`,
+Packages: Basic ($200/mo / ₹26k), Standard ($400/mo / ₹52k), Premium ($700/mo / ₹91k).`,
   },
   {
-    keywords: ["other", "seo", "automation", "video", "editing", "branding", "more", "additional", "custom"],
-    answer: `Our Other Digital Solutions cover everything else you might need:
-• SEO (Search Engine Optimization)
-• Branding and identity
-• Video editing and production
-• Marketing automation
+    keywords: ["other", "seo", "automation", "video", "editing", "branding", "custom"],
+    answer: `Our Other Digital Solutions cover:
+• Advanced Search Engine Optimization (SEO)
+• Short-form video editing for Reels & TikTok
+• Automated lead capture & CRM workflows
+• Bespoke technical consulting
 
-We do it all for your growth. Tell us what you need and we'll build a custom solution!`,
+Rates start at $50/hour (₹6,500/hr) or $150/project (₹19,500/project). Tell us what you need!`,
   },
   {
     keywords: ["person", "human", "real", "talk", "call", "connect", "speak", "agent", "live", "representative", "founder"],
-    answer: `Of course! You can reach a real human at LUCIAN through:
+    answer: `Of course! You can reach a real team member at LUCIAN through:
 Email: lucianofficial07052026@gmail.com
 WhatsApp: 977 9818587406
 
-Or click 'Get Started' on any service card to submit an inquiry.
-A real team member will get back to you within 24 hours!`,
+Or click 'Get Started' on any service card to submit an inquiry. We'll connect with you within 24 hours!`,
   },
   {
     keywords: ["thanks", "thank you", "awesome", "great", "cool", "ok", "okay", "nice", "perfect", "good", "appreciate"],
-    answer: `You're very welcome! If you have any more questions, I'm always here to help. Ready to start your journey with LUCIAN? Just click 'Get Started' on any service card, or reach out directly via email (lucianofficial07052026@gmail.com) or WhatsApp (977 9818587406). We can't wait to work with you!`,
+    answer: `You're very welcome! If you have any more questions, I'm always here to help. Ready to elevate your brand with LUCIAN? Just click 'Get Started' on any service card, or reach out directly via WhatsApp (977 9818587406) or email (lucianofficial07052026@gmail.com).`,
   },
   {
-    keywords: ["hello", "hi", "hey", "hola", "yo", "good morning", "good afternoon", "good evening", "hey there", "namaste"],
-    answer: `Hello! Welcome to LUCIAN – your 360° digital solutions agency. I'm here to help you learn about our services, pricing, and how we can grow your brand. What can I help you with today?`,
+    keywords: ["hello", "hi", "hey", "hola", "yo", "good morning", "good afternoon", "good evening", "namaste"],
+    answer: `Hello! Welcome to LUCIAN – your 360° digital solutions agency. I'm here to help you explore our services, dual-currency pricing (USD / NPR), and how we can grow your brand. What can I help you with today?`,
   },
   {
     keywords: ["inquiry", "inquiry form", "submit", "form", "application", "quote form"],
-    answer: `You can start an inquiry by clicking 'Get Started' on any service card. This will take you through our quick 3-step process:
-1. Confirm your selected service
-2. Tell us about you and your project
+    answer: `You can start an inquiry by clicking 'Get Started' on any service card:
+1. Select your desired package tier (Basic, Standard, or Premium)
+2. Provide your project details and contact info
 3. Review and submit
 
-We'll get back to you within 24 hours via email or WhatsApp!`,
+Our team will review your requirements and get back to you within 24 hours!`,
   },
 ];
 
-const FALLBACK_ANSWER = `That's a great question! Let me point you to the best way to get answers. You can:
-• Browse our services above and click 'Get Started' for details
-• Visit our About page to learn more about us
-• Contact us directly via email (lucianofficial07052026@gmail.com) or WhatsApp (977 9818587406)
+const FALLBACK_ANSWER = `That's a great question! Here is how we can help you best:
+• Browse our services on the website and click 'Get Started' for full package details
+• Switch between USD ($) and NPR (₹) using the country selector in the top right
+• Contact our team directly via WhatsApp (977 9818587406) or email (lucianofficial07052026@gmail.com)
 
-Is there a specific service you're interested in?`;
+Would you like to see our prices in NPR or USD?`;
 
 const QUICK_REPLY_BUTTONS = [
   "What services do you offer?",
-  "How much do you charge?",
-  "How do I get started?",
-  "Do you do social media?",
+  "How much is social media management?",
+  "Show me prices in NPR",
+  "Show me prices in USD",
+  "What's the most popular package?",
   "Can you build a website?",
   "What about graphic design?",
+  "Tell me about Complete Digital Pro",
   "Connect me with a real person",
 ];
 
@@ -155,7 +273,7 @@ export function Chatbot() {
     {
       id: "welcome",
       sender: "bot",
-      text: "Hello! Welcome to LUCIAN. I'm here to help you explore our 360° digital solutions. What can I help you with today?",
+      text: "Hello! Welcome to LUCIAN. I'm here to help you explore our 360° digital solutions and pricing (USD & NPR). What can I help you with today?",
       timestamp: "Just now",
     },
   ]);

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { MessageCircle, Menu, X, Mail, Instagram, Facebook } from "lucide-react";
+import { CurrencySelector } from "@/components/CurrencySelector";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,11 +62,14 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* Far right: Direct Phone / WhatsApp Contact Button + Mobile toggle */}
-        <div className="flex items-center gap-4">
+        {/* Far right: Currency Selector + Direct Phone Button + Mobile toggle */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Dual-currency selector dropdown */}
+          <CurrencySelector />
+
           <a
             href="tel:+9779818587406"
-            className="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
+            className="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold text-xs sm:text-sm font-mono font-semibold hover:bg-gold hover:text-background transition-all duration-200 hover:shadow-[0_0_20px_rgba(245,176,65,0.35)]"
             aria-label="Call LUCIAN: 977 9818587406"
           >
             <MessageCircle className="w-4 h-4" />
@@ -109,7 +113,13 @@ export function Navbar() {
             >
               Contact
             </Link>
+
             <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+              <div className="pb-1">
+                <div className="text-xs font-mono text-mutedText uppercase mb-2">Change Currency</div>
+                <CurrencySelector isMobileDrawer={true} />
+              </div>
+
               <a
                 href="tel:+9779818587406"
                 className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-gold/10 border border-gold/30 text-gold text-sm font-mono font-semibold"

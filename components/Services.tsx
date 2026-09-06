@@ -1,9 +1,13 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Tag } from "lucide-react";
 import { servicesList, getServiceIcon } from "@/lib/services-data";
+import { useCurrency } from "@/lib/currency-context";
 
 export function Services() {
+  const { getStartingPrice } = useCurrency();
   const topServices = servicesList.slice(0, 3);
   const bottomServices = servicesList.slice(3, 5);
 
@@ -37,6 +41,8 @@ export function Services() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {topServices.map((service) => {
               const IconComponent = getServiceIcon(service.iconName);
+              const startingPrice = getStartingPrice(service.slug);
+
               return (
                 <div
                   key={service.slug}
@@ -58,9 +64,15 @@ export function Services() {
                       </Link>
                     </h3>
 
-                    <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-8">
+                    <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-6">
                       {service.description}
                     </p>
+
+                    {/* Starting price tag */}
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gold/10 border border-gold/30 text-gold text-xs font-mono font-semibold mb-6">
+                      <Tag className="w-3.5 h-3.5" />
+                      <span>Starting at <strong className="text-sm font-bold text-white">{startingPrice}</strong></span>
+                    </div>
                   </div>
 
                   {/* Whole Golden Button as Full-Area Direct Clickable Link */}
@@ -82,6 +94,8 @@ export function Services() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
             {bottomServices.map((service) => {
               const IconComponent = getServiceIcon(service.iconName);
+              const startingPrice = getStartingPrice(service.slug);
+
               return (
                 <div
                   key={service.slug}
@@ -103,9 +117,15 @@ export function Services() {
                       </Link>
                     </h3>
 
-                    <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-8">
+                    <p className="text-sm sm:text-base text-mutedText leading-relaxed font-light mb-6">
                       {service.description}
                     </p>
+
+                    {/* Starting price tag */}
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gold/10 border border-gold/30 text-gold text-xs font-mono font-semibold mb-6">
+                      <Tag className="w-3.5 h-3.5" />
+                      <span>Starting at <strong className="text-sm font-bold text-white">{startingPrice}</strong></span>
+                    </div>
                   </div>
 
                   {/* Whole Golden Button as Full-Area Direct Clickable Link */}
