@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Sparkles, Tag } from "lucide-react";
 import { servicesList, getServiceIcon } from "@/lib/services-data";
 import { useCurrency } from "@/lib/currency-context";
+import { CurrencyToggle } from "@/components/CurrencyToggle";
 
 export function Services() {
   const { getStartingPrice } = useCurrency();
@@ -30,9 +31,15 @@ export function Services() {
           </h2>
 
           {/* Subtitle */}
-          <p className="text-base sm:text-lg text-mutedText leading-relaxed">
+          <p className="text-base sm:text-lg text-mutedText leading-relaxed mb-6">
             We provide 360&deg; digital services to grow your brand, engage your audience, and achieve real results.
           </p>
+
+          {/* Currency Toggle — Visible right above pricing cards */}
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-xs font-mono text-mutedText uppercase tracking-wider">View prices in:</span>
+            <CurrencyToggle />
+          </div>
         </div>
 
         {/* Dynamic Asymmetrical Grid: 3 cards top row, 2 cards centered bottom row */}

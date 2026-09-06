@@ -23,7 +23,7 @@ export function CurrencyToggle({ className = "" }: CurrencyToggleProps) {
 
   return (
     <div
-      className={`inline-flex items-center p-1 rounded-full bg-surface border border-white/10 shadow-inner ${className}`}
+      className={`inline-flex items-center p-1 rounded-full bg-[#151515] border border-gold/40 shadow-[0_0_12px_rgba(245,176,65,0.1)] ${className}`}
       role="group"
       aria-label="Currency Selector"
     >
@@ -32,8 +32,8 @@ export function CurrencyToggle({ className = "" }: CurrencyToggleProps) {
         onClick={() => handleToggle("NPR")}
         className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all duration-200 ${
           currency === "NPR"
-            ? "bg-gold text-background shadow-[0_0_12px_rgba(245,176,65,0.4)] scale-100"
-            : "text-mutedText hover:text-white"
+            ? "bg-gold text-background shadow-[0_0_12px_rgba(245,176,65,0.5)]"
+            : "text-[#A0A0A0] hover:text-white"
         }`}
       >
         ₹ NPR
@@ -43,8 +43,8 @@ export function CurrencyToggle({ className = "" }: CurrencyToggleProps) {
         onClick={() => handleToggle("USD")}
         className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all duration-200 ${
           currency === "USD"
-            ? "bg-gold text-background shadow-[0_0_12px_rgba(245,176,65,0.4)] scale-100"
-            : "text-mutedText hover:text-white"
+            ? "bg-gold text-background shadow-[0_0_12px_rgba(245,176,65,0.5)]"
+            : "text-[#A0A0A0] hover:text-white"
         }`}
       >
         $ USD
