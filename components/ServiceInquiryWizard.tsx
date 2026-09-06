@@ -29,7 +29,7 @@ interface ServiceInquiryWizardProps {
 export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
   const router = useRouter();
   const service = getServiceBySlug(slug) || servicesList[0];
-  const { currency, formatPrice } = useCurrency();
+  const { currency, formatPrice, locationDetails } = useCurrency();
 
   const pricingData = SERVICE_PRICING[slug] || SERVICE_PRICING["social-media-management"];
   const defaultPackage = pricingData.packages.find((p) => p.isPopular) || pricingData.packages[0];
@@ -74,12 +74,15 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
     selectedPackage.unit
   );
 
+  const clientLocationStr = `${locationDetails.city ? `${locationDetails.city}, ` : ""}${locationDetails.countryName} (${locationDetails.countryCode})`;
+
   // Pre-filled WhatsApp message for direct instant chat
   const whatsappPreFilledUrl = `https://wa.me/9779818587406?text=${encodeURIComponent(
     `*NEW PROJECT INQUIRY FOR LUCIAN*\n` +
       `----------------------------\n` +
       `*Service:* ${service.title}\n` +
       `*Package:* ${selectedPackage.name} (${formattedSelectedPrice})\n` +
+      `*Client Location:* ${clientLocationStr}\n` +
       `*Name:* ${formData.fullName || "Prospective Client"}\n` +
       `*Email:* ${formData.email || "Not specified"}\n` +
       `*Phone:* ${formData.phone.trim() || "Not specified"}\n` +
@@ -104,6 +107,11 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
       packageName: selectedPackage.name,
       packagePrice: formattedSelectedPrice,
       currency,
+      clientCountry: `${locationDetails.countryName} (${locationDetails.countryCode})`,
+      clientCity: locationDetails.city || "",
+      clientRegion: locationDetails.region || "",
+      clientTimezone: locationDetails.timezone || "",
+      clientIp: locationDetails.ip || "",
       ...formData,
     };
 
@@ -134,6 +142,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           "lucian_last_inquiry",
           JSON.stringify({
             ...submissionPayload,
+            clientLocation: clientLocationStr,
             submittedAt: new Date().toLocaleTimeString(),
           })
         );

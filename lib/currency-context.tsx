@@ -15,45 +15,155 @@ import {
   getStartingPrice as getStartingPriceUtil,
 } from "./pricing";
 
+export interface LocationDetails {
+  countryName: string;
+  countryCode: string;
+  city?: string;
+  region?: string;
+  timezone: string;
+  ip?: string;
+  isAutoDetected: boolean;
+}
+
 interface CurrencyContextType {
   currency: Currency;
   country: Country;
   setCountry: (country: Country) => void;
   formatPrice: (usdAmount: number, unit?: string) => string;
   getStartingPrice: (slug: string) => string;
+  locationDetails: LocationDetails;
 }
 
+const defaultLocation: LocationDetails = {
+  countryName: "Nepal",
+  countryCode: "NP",
+  timezone: "Asia/Kathmandu",
+  isAutoDetected: false,
+};
+
 const CurrencyContext = createContext<CurrencyContextType>({
-  currency: "USD",
-  country: COUNTRIES[1], // United States default
+  currency: "NPR",
+  country: COUNTRIES[0],
   setCountry: () => {},
   formatPrice: (usdAmount: number, unit?: string) => `$${usdAmount}${unit || ""}`,
-  getStartingPrice: (slug: string) => "$35",
+  getStartingPrice: (slug: string) => "₹4,550",
+  locationDetails: defaultLocation,
 });
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  // Default to Nepal (NPR) as primary agency base, or loaded from localStorage
-  const [country, setCountryState] = useState<Country>(COUNTRIES[0]);
+  const [country, setCountryState] = useState<Country>(COUNTRIES[0]); // Default Nepal
+  const [locationDetails, setLocationDetails] = useState<LocationDetails>(defaultLocation);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+
+    let clientTimezone = "UTC";
     try {
-      const savedCountryCode = localStorage.getItem("selectedCountryCode");
-      if (savedCountryCode) {
-        const savedCountry = COUNTRIES.find((c) => c.code === savedCountryCode);
-        if (savedCountry) {
-          setCountryState(savedCountry);
+      clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+    } catch (e) {
+      console.warn("Timezone error:", e);
+    }
+
+    const savedCountryCode = localStorage.getItem("selectedCountryCode");
+    const hasExplicitChoice = !!savedCountryCode;
+
+    if (hasExplicitChoice) {
+      const savedCountry = COUNTRIES.find((c) => c.code === savedCountryCode);
+      if (savedCountry) {
+        setCountryState(savedCountry);
+        setLocationDetails((prev) => ({
+          ...prev,
+          countryName: savedCountry.name,
+          countryCode: savedCountry.code,
+          timezone: clientTimezone,
+          isAutoDetected: false,
+        }));
+      }
+    }
+
+    // Auto-detect visitor location asynchronously
+    const detectLocation = async () => {
+      let detectedCode = "";
+      let detectedCity = "";
+      let detectedRegion = "";
+      let detectedIp = "";
+
+      // 1. Check client-side timezone fast heuristic
+      if (clientTimezone.includes("Kathmandu") || clientTimezone.includes("Katmandu")) {
+        detectedCode = "NP";
+      }
+
+      // 2. Query internal Vercel header detection route
+      try {
+        const res = await fetch("/api/detect-location");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.countryCode) {
+            detectedCode = data.countryCode;
+            detectedCity = data.city || "";
+            detectedRegion = data.region || "";
+            detectedIp = data.ip || "";
+          }
+        }
+      } catch (err) {
+        console.warn("Internal location detect notice:", err);
+      }
+
+      // 3. Fallback to public IP geolocation if still not detected
+      if (!detectedCode) {
+        try {
+          const ipRes = await fetch("https://ipapi.co/json/", { cache: "no-store" });
+          if (ipRes.ok) {
+            const ipData = await ipRes.json();
+            detectedCode = ipData.country_code || "";
+            detectedCity = ipData.city || "";
+            detectedRegion = ipData.region || "";
+            detectedIp = ipData.ip || "";
+          }
+        } catch (err) {
+          console.warn("Public IP detect notice:", err);
         }
       }
-    } catch (e) {
-      console.error("Failed to load currency preference", e);
-    }
+
+      // If we found a detected country code
+      if (detectedCode) {
+        const matchedCountry =
+          COUNTRIES.find(
+            (c) => c.code.toUpperCase() === detectedCode.toUpperCase()
+          ) || (detectedCode === "NP" ? COUNTRIES[0] : COUNTRIES[1]);
+
+        setLocationDetails({
+          countryName: matchedCountry.name,
+          countryCode: matchedCountry.code,
+          city: detectedCity,
+          region: detectedRegion,
+          timezone: clientTimezone,
+          ip: detectedIp,
+          isAutoDetected: true,
+        });
+
+        // If user didn't manually pick a country, apply the auto-detected country
+        if (!hasExplicitChoice) {
+          setCountryState(matchedCountry);
+        }
+      }
+    };
+
+    detectLocation();
 
     const handleStorage = (e: StorageEvent) => {
       if (e.key === "selectedCountryCode" && e.newValue) {
         const matching = COUNTRIES.find((c) => c.code === e.newValue);
-        if (matching) setCountryState(matching);
+        if (matching) {
+          setCountryState(matching);
+          setLocationDetails((prev) => ({
+            ...prev,
+            countryName: matching.name,
+            countryCode: matching.code,
+            isAutoDetected: false,
+          }));
+        }
       }
     };
 
@@ -61,6 +171,12 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
       const customEvent = e as CustomEvent<Country>;
       if (customEvent.detail) {
         setCountryState(customEvent.detail);
+        setLocationDetails((prev) => ({
+          ...prev,
+          countryName: customEvent.detail.name,
+          countryCode: customEvent.detail.code,
+          isAutoDetected: false,
+        }));
       }
     };
 
@@ -74,6 +190,13 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 
   const setCountry = useCallback((newCountry: Country) => {
     setCountryState(newCountry);
+    setLocationDetails((prev) => ({
+      ...prev,
+      countryName: newCountry.name,
+      countryCode: newCountry.code,
+      isAutoDetected: false,
+    }));
+
     try {
       localStorage.setItem("selectedCountryCode", newCountry.code);
       localStorage.setItem("selectedCountry", JSON.stringify(newCountry));
@@ -110,6 +233,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
         setCountry,
         formatPrice,
         getStartingPrice,
+        locationDetails,
       }}
     >
       {children}

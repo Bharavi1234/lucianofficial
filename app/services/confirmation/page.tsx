@@ -22,6 +22,7 @@ interface InquiryData {
   packageName?: string;
   packagePrice?: string;
   currency?: string;
+  clientLocation?: string;
   fullName?: string;
   email?: string;
   phone?: string;
@@ -61,6 +62,7 @@ function ConfirmationContent() {
     `----------------------------\n` +
     `*Service:* ${serviceName}\n` +
     (packageName ? `*Package:* ${packageName} ${packagePrice ? `(${packagePrice})` : ""}\n` : "") +
+    (inquiry?.clientLocation ? `*Client Location:* ${inquiry.clientLocation}\n` : "") +
     `*Client:* ${clientName}\n` +
     (inquiry?.email ? `*Email:* ${inquiry.email}\n` : "") +
     (inquiry?.phone ? `*Phone:* ${inquiry.phone}\n` : "") +
