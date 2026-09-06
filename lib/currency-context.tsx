@@ -32,28 +32,31 @@ interface CurrencyContextType {
   formatPrice: (usdAmount: number, unit?: string) => string;
   getStartingPrice: (slug: string) => string;
   locationDetails: LocationDetails;
+  detectionComplete: boolean;
 }
 
 const defaultLocation: LocationDetails = {
-  countryName: "Nepal",
-  countryCode: "NP",
-  timezone: "Asia/Kathmandu",
+  countryName: "",
+  countryCode: "",
+  timezone: "UTC",
   isAutoDetected: false,
 };
 
 const CurrencyContext = createContext<CurrencyContextType>({
-  currency: "NPR",
-  country: COUNTRIES[0],
+  currency: "USD",
+  country: COUNTRIES[1],
   setCountry: () => {},
   formatPrice: (usdAmount: number, unit?: string) => `$${usdAmount}${unit || ""}`,
-  getStartingPrice: (slug: string) => "₹4,550",
+  getStartingPrice: (_slug: string) => "$35",
   locationDetails: defaultLocation,
+  detectionComplete: false,
 });
 
 export function CurrencyProvider({ children }: { children: React.ReactNode }) {
-  const [country, setCountryState] = useState<Country>(COUNTRIES[0]); // Default Nepal
+  const [country, setCountryState] = useState<Country>(COUNTRIES[1]);
   const [locationDetails, setLocationDetails] = useState<LocationDetails>(defaultLocation);
   const [mounted, setMounted] = useState(false);
+  const [detectionComplete, setDetectionComplete] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -68,17 +71,19 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     const savedCountryCode = localStorage.getItem("selectedCountryCode");
     const hasExplicitChoice = !!savedCountryCode;
 
+    // If user already made a choice in a previous visit, use it and skip detection
     if (hasExplicitChoice) {
       const savedCountry = COUNTRIES.find((c) => c.code === savedCountryCode);
       if (savedCountry) {
         setCountryState(savedCountry);
-        setLocationDetails((prev) => ({
-          ...prev,
+        setLocationDetails({
           countryName: savedCountry.name,
           countryCode: savedCountry.code,
           timezone: clientTimezone,
           isAutoDetected: false,
-        }));
+        });
+        setDetectionComplete(true);
+        return;
       }
     }
 
@@ -126,7 +131,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
-      // If we found a detected country code
+      // If we found a detected country code, apply it
       if (detectedCode) {
         const matchedCountry =
           COUNTRIES.find(
@@ -143,11 +148,11 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
           isAutoDetected: true,
         });
 
-        // If user didn't manually pick a country, apply the auto-detected country
-        if (!hasExplicitChoice) {
-          setCountryState(matchedCountry);
-        }
+        setCountryState(matchedCountry);
       }
+
+      // Mark detection as complete regardless of whether we found a country
+      setDetectionComplete(true);
     };
 
     detectLocation();
@@ -209,7 +214,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const currentCurrency: Currency = mounted ? country.currency : "NPR";
+  const currentCurrency: Currency = mounted ? country.currency : "USD";
 
   const formatPrice = useCallback(
     (usdAmount: number, unit?: string) => {
@@ -234,6 +239,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
         formatPrice,
         getStartingPrice,
         locationDetails,
+        detectionComplete,
       }}
     >
       {children}
