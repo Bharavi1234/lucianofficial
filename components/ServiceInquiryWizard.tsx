@@ -16,7 +16,7 @@ import {
   Check,
 } from "lucide-react";
 import { getServiceBySlug, getServiceIcon, servicesList } from "@/lib/services-data";
-import { SERVICE_PRICING, ServicePackage } from "@/lib/pricing";
+import { SERVICE_PRICING, ServicePackage, formatPackagePrice } from "@/lib/pricing";
 import { useCurrency } from "@/lib/currency-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,10 +69,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
 
   const isStep2Valid = isNameValid && isEmailValid && isPhoneValid && isBriefValid;
 
-  const formattedSelectedPrice = formatPrice(
-    selectedPackage.usdPrice,
-    selectedPackage.unit
-  );
+  const formattedSelectedPrice = formatPackagePrice(selectedPackage, currency);
 
   const clientLocationStr = `${locationDetails.city ? `${locationDetails.city}, ` : ""}${locationDetails.countryName} (${locationDetails.countryCode})`;
 
@@ -291,7 +288,7 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
           {/* 3 Package Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
             {pricingData.packages.map((pkg) => {
-              const priceDisplay = formatPrice(pkg.usdPrice, pkg.unit);
+              const priceDisplay = formatPackagePrice(pkg, currency);
               const isSelected = selectedPackage.id === pkg.id;
 
               return (

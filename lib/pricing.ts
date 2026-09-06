@@ -13,7 +13,8 @@ export interface ServicePackage {
   id: "basic" | "standard" | "premium";
   name: string;
   usdPrice: number;
-  unit?: string; // e.g., "/month", "/hour", "/project"
+  nprPrice: number;
+  unit?: string; // e.g., "/month", "/hour", "/project", "/design"
   isPopular?: boolean;
   features: string[];
 }
@@ -21,6 +22,7 @@ export interface ServicePackage {
 export interface ServicePricingData {
   slug: string;
   startingPriceUsd: number;
+  startingPriceNpr: number;
   startingUnit?: string;
   packages: ServicePackage[];
 }
@@ -194,7 +196,7 @@ export const COUNTRIES: Country[] = [
   { name: "Ukraine", code: "UA", currency: "USD", flag: "🇺🇦" },
   { name: "United Arab Emirates", code: "AE", currency: "USD", flag: "🇦🇪" },
   { name: "Uruguay", code: "UY", currency: "USD", flag: "🇺🇾" },
-  { name: "Uzbekistan", code: "UZ", currency: "USD", flag: "🇺🇿" },
+  { name: "Uzbekistan", code: "UZ", currency: "USD", flag: "UZ" },
   { name: "Vatican City", code: "VA", currency: "USD", flag: "🇻🇦" },
   { name: "Venezuela", code: "VE", currency: "USD", flag: "🇻🇪" },
   { name: "Vietnam", code: "VN", currency: "USD", flag: "🇻🇳" },
@@ -203,34 +205,70 @@ export const COUNTRIES: Country[] = [
   { name: "Zimbabwe", code: "ZW", currency: "USD", flag: "🇿🇼" },
 ];
 
+export const PRICING_CONFIG = {
+  exchangeRate: 130,
+  services: {
+    "social-media-management": {
+      usd: { basic: 35, standard: 75, premium: 150 },
+      npr: { basic: 6000, standard: 15000, premium: 30000 },
+    },
+    "graphic-design-poster-making": {
+      usd: { basic: 25, standard: 55, premium: 150 },
+      npr: { basic: 2500, standard: 6000, premium: 15000 },
+    },
+    "website-design-development": {
+      usd: { basic: 200, standard: 500, premium: 1000 },
+      npr: { basic: 20000, standard: 50000, premium: 100000 },
+    },
+    "digital-marketing-advertising": {
+      usd: { basic: 200, standard: 400, premium: 700 },
+      npr: { basic: 15000, standard: 30000, premium: 55000 },
+    },
+    "other-digital-solutions": {
+      usd: { basic: 50, standard: 150, premium: 400 },
+      npr: { basic: 4000, standard: 15000, premium: 40000 },
+    },
+    "complete-digital-pro": {
+      usd: { basic: 1000, standard: null, premium: null },
+      npr: { basic: 85000, standard: null, premium: null },
+    },
+  },
+};
+
 export const SERVICE_PRICING: Record<string, ServicePricingData> = {
   "social-media-management": {
     slug: "social-media-management",
     startingPriceUsd: 35,
+    startingPriceNpr: 6000,
+    startingUnit: "/month",
     packages: [
       {
         id: "basic",
         name: "Basic",
         usdPrice: 35,
+        nprPrice: 6000,
+        unit: "/month",
         features: [
           "2 platforms management",
-          "5 posts + 1 reel",
+          "5 posts + 1 reel / week",
           "7 days management",
-          "Hashtag optimization",
-          "Basic caption writing",
+          "Schedule posts",
+          "Hashtag optimization & basic caption writing",
         ],
       },
       {
         id: "standard",
         name: "Standard",
         usdPrice: 75,
+        nprPrice: 15000,
+        unit: "/month",
         isPopular: true,
         features: [
           "3 platforms management",
-          "10 posts + 3 reels",
+          "10 posts + 3 reels / week",
           "15 days management",
           "Engagement with followers",
-          "Growth action plan",
+          "Action plan & growth strategy",
           "Basic performance report",
           "2 revision rounds",
         ],
@@ -239,13 +277,15 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
         id: "premium",
         name: "Premium",
         usdPrice: 150,
+        nprPrice: 30000,
+        unit: "/month",
         features: [
           "5 platforms management",
-          "20 posts + 6 reels",
+          "20 posts + 6 reels / week",
           "30 days full management",
-          "Full audience engagement",
-          "Custom content strategy",
-          "Advanced analytics report",
+          "Daily audience engagement",
+          "Custom action plan & content strategy",
+          "Detailed analytics report",
           "Unlimited revisions",
         ],
       },
@@ -254,42 +294,50 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
   "graphic-design-poster-making": {
     slug: "graphic-design-poster-making",
     startingPriceUsd: 25,
+    startingPriceNpr: 2500,
+    startingUnit: "/design",
     packages: [
       {
         id: "basic",
         name: "Basic",
         usdPrice: 25,
+        nprPrice: 2500,
+        unit: "/design",
         features: [
-          "2 promotional posters",
-          "High-resolution PNG & JPG",
+          "1 custom design",
+          "2 revisions",
+          "Print-ready format (PNG & JPG)",
           "Brand color integration",
-          "2 days delivery",
-          "1 revision round",
+          "2-day turnaround",
         ],
       },
       {
         id: "standard",
         name: "Standard",
         usdPrice: 55,
+        nprPrice: 6000,
+        unit: "/design",
         isPopular: true,
         features: [
-          "5 multi-format graphics",
+          "3 custom designs",
+          "3 revisions",
+          "Source files included (PSD/AI)",
           "Social & print-ready formats",
-          "Editable source files (PSD/AI)",
           "Brand typography system",
-          "3 revision rounds",
         ],
       },
       {
         id: "premium",
         name: "Premium",
         usdPrice: 150,
+        nprPrice: 15000,
+        unit: "/design",
         features: [
-          "Complete brand identity collateral",
-          "15+ custom visual assets & posters",
+          "5 custom designs / Full brand kit",
+          "Unlimited revisions",
           "All vector & print-ready files",
-          "Social media ad creative kit",
-          "Priority 24h turnaround & unlimited revisions",
+          "Complete brand identity collateral",
+          "Priority 24h turnaround",
         ],
       },
     ],
@@ -297,29 +345,32 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
   "website-design-development": {
     slug: "website-design-development",
     startingPriceUsd: 200,
+    startingPriceNpr: 20000,
     packages: [
       {
         id: "basic",
         name: "Basic",
         usdPrice: 200,
+        nprPrice: 20000,
         features: [
-          "Modern single-page landing site",
+          "1-page responsive website",
+          "2 revisions",
+          "3-day delivery",
           "100% mobile responsive UI",
           "WhatsApp & email inquiry setup",
-          "Basic technical SEO setup",
-          "Fast loading performance",
         ],
       },
       {
         id: "standard",
         name: "Standard",
         usdPrice: 500,
+        nprPrice: 50000,
         isPopular: true,
         features: [
-          "Multi-page corporate website (up to 5 pages)",
-          "Bespoke UI/UX design in Next.js / React",
-          "Interactive inquiry & contact wizards",
-          "Full SEO optimization & analytics",
+          "5-page custom website",
+          "SEO optimized & high-speed performance",
+          "Interactive contact form & inquiry wizard",
+          "3 revisions",
           "1 month post-launch support",
         ],
       },
@@ -327,11 +378,12 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
         id: "premium",
         name: "Premium",
         usdPrice: 1000,
+        nprPrice: 100000,
         features: [
-          "Full-scale custom web platform",
-          "Unlimited pages & dynamic integrations",
-          "Advanced animations & conversion funnels",
-          "Complete SEO foundation & speed score >95",
+          "10-page custom website platform",
+          "E-commerce / CMS integration",
+          "Unlimited revisions",
+          "Advanced conversion funnels & animations",
           "3 months dedicated technical support",
         ],
       },
@@ -340,18 +392,20 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
   "digital-marketing-advertising": {
     slug: "digital-marketing-advertising",
     startingPriceUsd: 200,
+    startingPriceNpr: 15000,
     startingUnit: "/month",
     packages: [
       {
         id: "basic",
         name: "Basic",
         usdPrice: 200,
+        nprPrice: 15000,
         unit: "/month",
         features: [
-          "1 active ad campaign (Meta or Google)",
-          "Audience research & targeting setup",
+          "1 platform campaign (Meta or Google)",
+          "Strategy document & audience targeting",
           "2 ad creative variants",
-          "Bi-weekly performance report",
+          "Monthly performance report",
           "Ad spend optimization",
         ],
       },
@@ -359,27 +413,29 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
         id: "standard",
         name: "Standard",
         usdPrice: 400,
+        nprPrice: 30000,
         unit: "/month",
         isPopular: true,
         features: [
-          "3 multi-channel ad campaigns",
-          "Meta, Google & TikTok ads",
+          "3 platforms (Meta, Google & TikTok ads)",
+          "A/B testing & creative optimization",
           "6 high-converting dynamic creatives",
-          "A/B testing & retargeting funnels",
-          "Weekly ROAS analytics & reporting",
+          "Detailed performance reporting",
+          "Retargeting funnels setup",
         ],
       },
       {
         id: "premium",
         name: "Premium",
         usdPrice: 700,
+        nprPrice: 55000,
         unit: "/month",
         features: [
-          "Full-funnel digital advertising ecosystem",
-          "Unlimited campaigns & custom creative assets",
-          "Advanced conversion tracking & pixel setup",
+          "5 platforms full-funnel advertising",
+          "Advanced retargeting & custom creative assets",
+          "Weekly deep-dive analytics reports",
           "Dedicated growth strategist",
-          "Real-time ROI dashboard & weekly calls",
+          "Real-time ROI dashboard",
         ],
       },
     ],
@@ -387,51 +443,84 @@ export const SERVICE_PRICING: Record<string, ServicePricingData> = {
   "other-digital-solutions": {
     slug: "other-digital-solutions",
     startingPriceUsd: 50,
+    startingPriceNpr: 4000,
     startingUnit: "/hour",
     packages: [
       {
         id: "basic",
         name: "Basic",
         usdPrice: 50,
+        nprPrice: 4000,
         unit: "/hour",
         features: [
-          "Hourly technical consulting & troubleshooting",
-          "SEO quick audit & optimization",
-          "Short video reel edit (1 video)",
-          "Email & WhatsApp workflow fix",
+          "1 hour of work",
+          "SEO audit, video edit, or automation setup",
+          "Troubleshooting & consulting",
+          "Workflow fixes",
         ],
       },
       {
         id: "standard",
         name: "Standard",
         usdPrice: 150,
+        nprPrice: 15000,
         unit: "/project",
         isPopular: true,
         features: [
-          "Full technical SEO site overhaul",
-          "Automated lead capture & CRM notification pipeline",
-          "Batch video editing (5 short-form reels)",
-          "Custom branding & typography pack",
+          "Brand identity OR SEO content strategy",
+          "Promotional video edit (5 short-form reels)",
+          "Automated lead capture pipeline",
+          "Full technical overhaul",
         ],
       },
       {
         id: "premium",
         name: "Premium",
         usdPrice: 400,
+        nprPrice: 40000,
         unit: "/project",
         features: [
-          "Comprehensive enterprise digital infrastructure",
-          "End-to-end workflow & marketing automation",
+          "Complete YouTube automation OR full branding campaign",
+          "Complex automation workflow & CRM integrations",
           "15+ short-form edited reels with captions",
-          "Bespoke technical scaling roadmap",
+          "Dedicated technical roadmap",
+        ],
+      },
+    ],
+  },
+  "complete-digital-pro": {
+    slug: "complete-digital-pro",
+    startingPriceUsd: 1000,
+    startingPriceNpr: 85000,
+    packages: [
+      {
+        id: "basic",
+        name: "Starting at",
+        usdPrice: 1000,
+        nprPrice: 85000,
+        features: [
+          "Analyze existing systems",
+          "Develop & implement customized solution across up to 3 platforms",
+          "Optimize digital workflow",
+          "Provide advanced reporting",
+          "Create clear action plan for long-term growth",
         ],
       },
     ],
   },
 };
 
-export function convertUsdToNpr(usd: number): number {
-  return usd * EXCHANGE_RATE;
+export function getPrice(
+  slug: string,
+  tier: "basic" | "standard" | "premium",
+  currency: Currency
+): number | null {
+  const service = (PRICING_CONFIG.services as any)[slug];
+  if (!service) return null;
+  if (currency === "NPR") {
+    return service.npr[tier];
+  }
+  return service.usd[tier];
 }
 
 export function formatPriceNumber(num: number): string {
@@ -441,17 +530,29 @@ export function formatPriceNumber(num: number): string {
 export function formatPrice(
   usdAmount: number,
   currency: Currency,
-  unit?: string
+  unit?: string,
+  nprAmount?: number
 ): string {
   if (currency === "NPR") {
-    const nprAmount = convertUsdToNpr(usdAmount);
-    return `₹${formatPriceNumber(nprAmount)}${unit || ""}`;
+    const npr = nprAmount !== undefined ? nprAmount : Math.round(usdAmount * EXCHANGE_RATE);
+    return `₹${formatPriceNumber(npr)}${unit || ""}`;
   }
   return `$${formatPriceNumber(usdAmount)}${unit || ""}`;
 }
 
+export function formatPackagePrice(pkg: ServicePackage, currency: Currency): string {
+  if (currency === "NPR") {
+    return `₹${formatPriceNumber(pkg.nprPrice)}${pkg.unit || ""}`;
+  }
+  return `$${formatPriceNumber(pkg.usdPrice)}${pkg.unit || ""}`;
+}
+
 export function getStartingPrice(slug: string, currency: Currency): string {
   const data = SERVICE_PRICING[slug];
-  if (!data) return currency === "NPR" ? "₹4,550" : "$35";
-  return formatPrice(data.startingPriceUsd, currency, data.startingUnit);
+  if (!data) return currency === "NPR" ? "₹6,000" : "$35";
+  if (currency === "NPR") {
+    return `₹${formatPriceNumber(data.startingPriceNpr)}${data.startingUnit || ""}`;
+  }
+  return `$${formatPriceNumber(data.startingPriceUsd)}${data.startingUnit || ""}`;
 }
+

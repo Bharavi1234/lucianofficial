@@ -69,31 +69,31 @@ const SERVICES_DATA = {
   smm: {
     title: "Social Media Management",
     description: "Strategy, content, scheduling & growth that builds strong online presence.",
-    pricing: "Starting at ₹4,550 ($35)",
+    pricing: "Starting at ₹6,000 ($35)",
     slug: "social-media-management",
   },
   design: {
     title: "Graphic Design & Poster Making",
     description: "Eye-catching designs that communicate your brand and leave a lasting impact.",
-    pricing: "Starting at ₹3,250 ($25)",
+    pricing: "Starting at ₹2,500 ($25)",
     slug: "graphic-design-poster-making",
   },
   web: {
     title: "Website Design & Development",
     description: "Modern, responsive and user-friendly websites that drive results.",
-    pricing: "Starting at ₹26,000 ($200)",
+    pricing: "Starting at ₹20,000 ($200)",
     slug: "website-design-development",
   },
   marketing: {
     title: "Digital Marketing & Advertising",
     description: "Ads, campaigns & marketing strategies that convert and maximize ROI.",
-    pricing: "Starting at ₹26,000/month ($200/mo)",
+    pricing: "Starting at ₹15,000/month ($200/mo)",
     slug: "digital-marketing-advertising",
   },
   other: {
     title: "Other Digital Solutions",
     description: "From SEO to branding, video editing to automation – we do it all for your growth.",
-    pricing: "Starting at ₹6,500/hour ($50/hr)",
+    pricing: "Starting at ₹4,000/hour ($50/hr)",
     slug: "other-digital-solutions",
   },
 };
@@ -464,12 +464,66 @@ export function Chatbot() {
       const nameTag = context.userName ? `, ${context.userName}` : "";
       if (context.lastServiceAsked === "Website Design & Development") {
         return {
-          text: `For our Website Design & Development package (starting at ₹26,000), we tailor the final price based on your specific feature requirements${nameTag}. Shall I prepare a custom quote for you?`,
+          text: `For our Website Design & Development package (starting at ₹20,000 / $200), we tailor the final price based on your specific feature requirements${nameTag}. Shall I prepare a custom quote for you?`,
           type: "text" as const,
         };
       }
       return {
         text: `For ${context.lastServiceAsked}, packages start at our listed baseline${nameTag}, with tiered options to match your exact business scope. Shall I prepare a custom proposal for you?`,
+        type: "text" as const,
+      };
+    }
+
+    // Specific NPR Pricing Inquiry
+    if (
+      lower.includes("npr") ||
+      lower.includes("nepali price") ||
+      lower.includes("nepal price") ||
+      lower.includes("prices in npr") ||
+      lower.includes("rate in npr") ||
+      lower.includes("rupees")
+    ) {
+      return {
+        text: `Here is LUCIAN's competitive pricing in Nepalese Rupees (NPR):\n\n1. **Social Media Management:** Starting at ₹6,000/month\n2. **Graphic Design & Poster Making:** Starting at ₹2,500/design\n3. **Website Design & Development:** Starting at ₹20,000\n4. **Digital Marketing & Advertising:** Starting at ₹15,000/month\n5. **Other Digital Solutions:** Starting at ₹4,000/hour\n6. **Complete Digital Pro:** Starting at ₹85,000\n\nAll prices are tailored for maximum ROI in the Nepali market. Would you like a detailed quote for any service?`,
+        type: "services_overview" as const,
+      };
+    }
+
+    // Specific USD Pricing Inquiry
+    if (
+      lower.includes("usd") ||
+      lower.includes("dollar") ||
+      lower.includes("prices in usd") ||
+      lower.includes("international price")
+    ) {
+      return {
+        text: `Here is LUCIAN's standard international pricing in USD:\n\n1. **Social Media Management:** Starting at $35/month\n2. **Graphic Design & Poster Making:** Starting at $25/design\n3. **Website Design & Development:** Starting at $200\n4. **Digital Marketing & Advertising:** Starting at $200/month\n5. **Other Digital Solutions:** Starting at $50/hour\n6. **Complete Digital Pro:** Starting at $1,000\n\nWould you like to discuss a custom package for your brand?`,
+        type: "services_overview" as const,
+      };
+    }
+
+    // Currency Difference / Why Different FAQ
+    if (
+      lower.includes("why are npr") ||
+      lower.includes("why are prices different") ||
+      lower.includes("different from usd") ||
+      lower.includes("difference between usd and npr")
+    ) {
+      return {
+        text: `Our NPR pricing is specially optimized and subsidized for the Nepali market to provide high-quality, professional digital services at competitive local rates, rather than a raw currency conversion.`,
+        type: "text" as const,
+      };
+    }
+
+    // Discount for long-term commitment FAQ
+    if (
+      lower.includes("discount") ||
+      lower.includes("long term") ||
+      lower.includes("long-term") ||
+      lower.includes("retainer discount")
+    ) {
+      return {
+        text: `Yes! We offer customized packages and discounts for multi-month retainers (3+ months or 6+ months). Contact our team to discuss long-term partnership rates.`,
         type: "text" as const,
       };
     }
@@ -483,7 +537,7 @@ export function Chatbot() {
       lower.includes("price")
     ) {
       return {
-        text: `Here is LUCIAN's complete 360° Digital Solutions Suite:\n\n1. **Social Media Management:** Starting at ₹4,550\n2. **Graphic Design & Poster Making:** Starting at ₹3,250\n3. **Website Design & Development:** Starting at ₹26,000\n4. **Digital Marketing & Advertising:** Starting at ₹26,000/month\n5. **Other Digital Solutions (SEO, Automation, Video):** Starting at ₹6,500/hour\n\n*Platforms we work on: Instagram, Facebook, TikTok, YouTube, LinkedIn & More.*\n\nSelect any service below or tap 'Get Started' for a tailored quote!`,
+        text: `Here is LUCIAN's complete 360° Digital Solutions Suite:\n\n1. **Social Media Management:** Starting at ₹6,000 ($35)\n2. **Graphic Design & Poster Making:** Starting at ₹2,500 ($25)\n3. **Website Design & Development:** Starting at ₹20,000 ($200)\n4. **Digital Marketing & Advertising:** Starting at ₹15,000/month ($200/mo)\n5. **Other Digital Solutions (SEO, Automation, Video):** Starting at ₹4,000/hour ($50/hr)\n\n*Platforms we work on: Instagram, Facebook, TikTok, YouTube, LinkedIn & More.*\n\nSelect any service below or tap 'Get Started' for a tailored quote!`,
         type: "services_overview" as const,
       };
     }

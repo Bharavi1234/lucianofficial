@@ -29,7 +29,7 @@ interface CurrencyContextType {
   currency: Currency;
   country: Country;
   setCountry: (country: Country) => void;
-  formatPrice: (usdAmount: number, unit?: string) => string;
+  formatPrice: (usdAmount: number, unit?: string, nprAmount?: number) => string;
   getStartingPrice: (slug: string) => string;
   locationDetails: LocationDetails;
   detectionComplete: boolean;
@@ -46,7 +46,7 @@ const CurrencyContext = createContext<CurrencyContextType>({
   currency: "USD",
   country: COUNTRIES[1],
   setCountry: () => {},
-  formatPrice: (usdAmount: number, unit?: string) => `$${usdAmount}${unit || ""}`,
+  formatPrice: (usdAmount: number, unit?: string, _nprAmount?: number) => `$${usdAmount}${unit || ""}`,
   getStartingPrice: (_slug: string) => "$35",
   locationDetails: defaultLocation,
   detectionComplete: false,
@@ -217,8 +217,8 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   const currentCurrency: Currency = mounted ? country.currency : "USD";
 
   const formatPrice = useCallback(
-    (usdAmount: number, unit?: string) => {
-      return formatPriceUtil(usdAmount, currentCurrency, unit);
+    (usdAmount: number, unit?: string, nprAmount?: number) => {
+      return formatPriceUtil(usdAmount, currentCurrency, unit, nprAmount);
     },
     [currentCurrency]
   );
