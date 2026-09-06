@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
@@ -8,16 +8,19 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       name,
+      company,
       email,
-      eventDate,
-      type = "Chatbot Lead",
+      phone,
+      goal,
+      service,
+      type = "Chatbot Qualified Lead",
       details = "",
       location = "",
     } = body;
 
-    if (!email && !name) {
+    if (!email && !name && !phone) {
       return NextResponse.json(
-        { error: "Name or email is required" },
+        { error: "Name, email, or phone is required" },
         { status: 400 }
       );
     }
@@ -37,17 +40,20 @@ export async function POST(request: Request) {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          _subject: `⚡ [Chatbot] New Lead / Booking: ${name || email} (${type})`,
+          _subject: `⚡ [LUCIAN AI Lead] ${name || "Client"} - ${service || "Digital Solutions"} [Goal: ${goal || "Growth"}]`,
           _template: "table",
           _captcha: "false",
           "Lead Type": type,
-          "Name": name || "Not provided",
-          "Email": email || "Not provided",
-          "Event / Collab Date": eventDate || "N/A",
-          "Details": details || "Captured via LUCIAN Chatbot Assistant",
-          "Location": clientLocation,
-          "IP": clientIp,
-          "Timestamp": new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" }),
+          "Full Name": name || "Not provided",
+          "Company / Brand": company || "Not provided",
+          "Email Address": email || "Not provided",
+          "Phone / WhatsApp": phone || "Not provided",
+          "Target Goal": goal || "Not provided",
+          "Interested Service": service || "General Agency Services",
+          "Additional Details": details || "Captured via LUCIAN AI Sales Assistant",
+          "Client Location": clientLocation,
+          "IP Address": clientIp,
+          "Submitted At": new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" }),
         }),
       });
     } catch (fsErr) {
@@ -67,8 +73,11 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             leadType: type,
             name,
+            company,
             email,
-            eventDate,
+            phone,
+            goal,
+            service,
             details,
             location: clientLocation,
             submittedAt: new Date().toISOString(),
@@ -80,10 +89,12 @@ export async function POST(request: Request) {
     }
 
     // Log to Vercel runtime logs for immediate visibility
-    console.log("=== NEW LUCIAN CHATBOT LEAD ===");
-    console.log(`Type: ${type} | Name: ${name} | Email: ${email}`);
-    console.log(`Date/Scope: ${eventDate} | Location: ${clientLocation}`);
-    console.log("===============================");
+    console.log("=== NEW LUCIAN QUALIFIED LEAD ===");
+    console.log(`Client: ${name} (${company || "No Company"})`);
+    console.log(`Contact: ${email} | ${phone}`);
+    console.log(`Service: ${service} | Goal: ${goal}`);
+    console.log(`Location: ${clientLocation} | IP: ${clientIp}`);
+    console.log("=================================");
 
     return NextResponse.json({ success: true });
   } catch (error) {
