@@ -125,7 +125,31 @@ export function ServiceInquiryWizard({ slug }: ServiceInquiryWizardProps) {
         body: JSON.stringify(submissionPayload),
       }).catch((err) => console.log("API notice:", err));
 
-      // 2. Submit directly to Formspree endpoint (mqpklvrn)
+      // 2. Direct client-side submission to FormSubmit.co (direct to Gmail)
+      await fetch("https://formsubmit.co/ajax/lucianofficial07052026@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `⚡ New LUCIAN Inquiry: ${service.title} - ${formData.fullName}`,
+          _template: "table",
+          _captcha: "false",
+          "Service Name": service.title,
+          "Package Selected": `${selectedPackage.name} (${formattedSelectedPrice})`,
+          "Currency": currency,
+          "Client Name": formData.fullName,
+          "Client Email": formData.email,
+          "Client Phone": formData.phone || "Not provided",
+          "Client Location": clientLocationStr,
+          "Budget Range": formData.budgetRange,
+          "How Found": formData.howFound,
+          "Project Brief": formData.projectBrief,
+        }),
+      }).catch((err) => console.log("FormSubmit client notice:", err));
+
+      // 3. Submit directly to Formspree endpoint (mqpklvrn)
       const formspreeId = process.env.NEXT_PUBLIC_FORMSPREE_ID || "mqpklvrn";
       await fetch(`https://formspree.io/f/${formspreeId}`, {
         method: "POST",
